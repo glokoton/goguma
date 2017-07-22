@@ -9,7 +9,7 @@ class Player extends Obj
         super(400, 300);
 
         this.spd = 5;
-        this.restrict = "´ç½ÅÀº!!";
+        this.restrict = "ï¿½ï¿½ï¿½ï¿½ï¿½!!";
 
         this.pressRight = false;
         this.pressLeft = false;
