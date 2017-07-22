@@ -11,6 +11,7 @@
 <script type = "text/javascript" src = "./client/obj.js"></script>
 <script type = "text/javascript" src = "./client/player.js"></script>
 <script type = "text/javascript" src = "./client/map.js"></script>
+<script type = "text/javascript" src = "./client/star.js"></script>
 
 <script>
     var context = document.getElementById("context").getContext("2d");
@@ -51,8 +52,8 @@
 
         Player.list[socketId].setScreen(scr, mapData.getSize());
 
+        Star.print(scr, context);
         mapData.print(img, scr, context);
-
         for (var i = 0; i < data.player.length; i++)
         {
             if (socketId == data.player[i].id) continue;
@@ -65,6 +66,7 @@
         socketId = id;
 
         mapData = new MapData(map);
+        for (var i = 1; i <= 1000; i++) Star.addStar();
     });
 
     document.onkeydown = function(event) {

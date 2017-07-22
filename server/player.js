@@ -68,9 +68,9 @@ class Player extends Obj
 
     gravity()
     {
-        /* 1�� �ӵ��� �߷� ���� */
+        /* accelerate gravity */
         if( this.vy < 20 ) this.vy += 1.5;
-        /* y��ġ�� �ӷ��� ���Ѵ�. */
+        /* change y position */
         this.y += this.vy;
     
         var x = Math.floor( (this.x+32) / 30 );
@@ -78,7 +78,7 @@ class Player extends Obj
         var rx = Math.floor( (this.x+40) / 30 );
         var y = Math.floor( (this.y-24) / 30 );
     
-        /* õ�忡 ���� �� */
+        /* when touch ceiling */
         if( (y + 1 > 0 && y + 1 < mapData.map[0].length - 1) && (( mapData.map[0][y+1][x] == 1 || mapData.map[0][y+1][lx] == 1 || mapData.map[0][y+1][rx] == 1 ) && this.vy < 0) ){
             this.y = y*30 + 48;
             this.vy = 0;
@@ -86,7 +86,7 @@ class Player extends Obj
         }
     
         y = Math.floor( (this.y+24) / 30 );
-        /* �ٴڿ� ���� �� ( �ٷ� �ؿ� ���� �ִ� && �������� �ִ� && �ٴ��� �������?�ʾҴ� )*/
+        /* when touch floor */
         if( (y + 1 > 0 && y + 1 < mapData.map[0].length - 1) &&
                 ( ( ( mapData.map[0][y+1][x] != 0 || mapData.map[0][y+1][lx] != 0 || mapData.map[0][y+1][rx] != 0) &&
                     ( mapData.map[0][y+1][x] != 3 && mapData.map[0][y+1][lx] != 3 && mapData.map[0][y+1][rx] != 3) ) &&
@@ -126,14 +126,16 @@ class Player extends Obj
     }
     moveUp()
     {
+        if (this.state == "JUMP") return;
+
         var x = Math.floor( (this.x+32) / 30 );
-        var y = Math.floor( (this.y+20) / 30 );
-        /* ��ٸ���?���� �� */
+        var y = Math.floor( (this.y+21) / 30 );
+        /* when touch ladder */
         if (mapData.map[0][y+1][x] == 3 || mapData.map[0][y+1][x] == 4)
         {
             this.vy = 0;
-            this.y -= this.spd;
-            this.motion += 0.25;
+            this.y -= this.spd/2;
+            this.motion += 0.2;
             this.motion %= 4;
             this.state = "CLIMB";
         }
@@ -142,14 +144,16 @@ class Player extends Obj
     }
     moveDown()
     {
+        if (this.state == "JUMP") return;
+
         var x = Math.floor( (this.x+32) / 30 );
         var y = Math.floor( (this.y+24) / 30 );
-        /* ��ٸ���?���� �� */
+        /* when touch ladder */
         if (mapData.map[0][y+1][x] == 3 || mapData.map[0][y+1][x] == 4)
         {
             this.vy = 0;
-            this.y += this.spd;
-            this.motion += 0.25;
+            this.y += this.spd/2;
+            this.motion += 0.2;
             this.motion %= 4;
             this.state = "CLIMB";
         }
@@ -159,6 +163,7 @@ class Player extends Obj
 
     setPosition()
     {
+        /* set first position */
         var stage = mapData.stage;
         var height = mapData.map[stage].length;
         var width = mapData.map[stage][0].length;

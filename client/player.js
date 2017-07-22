@@ -6,7 +6,7 @@ class Player extends Obj
 		this.state = state;
 		this.dir = dir;
 		this.motion = motion;
-        this.restrict = restrict; // ���ѻ��� ����
+        this.restrict = restrict;
     }
 
     setScreen(scr, mapSize)
