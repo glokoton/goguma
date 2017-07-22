@@ -1,0 +1,1 @@
+const mapData = require('./mapdata/mapdata.json');
