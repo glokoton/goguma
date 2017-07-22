@@ -26,7 +26,6 @@
     font-size: 12px;
     color: #FFFFFF;
     margin: 0;
-    cursor: pointer;
 }
 
 #ready_txt {
@@ -67,7 +66,7 @@
     width: 84%;
     height: 60%;
     left: 8%;
-    top: 8%;
+    top: 12%;
 }
 
 #btn_ready_wait {
@@ -77,7 +76,7 @@
     width: 84%;
     height: 53px;
     left: 8%;
-    top: 16%;
+    top: calc(40% - 100px);
     background: #ffc43d;
 }
 
