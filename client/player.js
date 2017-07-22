@@ -32,7 +32,12 @@ class Player extends Obj
             x -= 32;
         }
 
-        context.drawImage(img.player, m*w, 0, w, h, x, y, w, h);
+        if (this.state == "JUMP")
+            context.drawImage(img.player, 0, 2*h, w, h, x, y, w, h);
+        else if (this.state == "CLIMB")
+            context.drawImage(img.player, m*w, h, w, h, x, y, w, h);
+        else
+            context.drawImage(img.player, m*w, 0, w, h, x, y, w, h);
 
         /* restore canvas */
         context.restore();

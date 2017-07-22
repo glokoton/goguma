@@ -62,7 +62,7 @@ class Player extends Obj
             this.motion = 0;
         else if (this.state == "WALK"){
             this.motion += 0.34;
-            this.motion %= 7;
+            this.motion %= 8;
         }
     }
 
@@ -110,13 +110,13 @@ class Player extends Obj
     moveLeft()
     {
         this.x -= this.spd;
-        this.state = "WALK";
+        if (this.state != "JUMP") this.state = "WALK";
         this.dir = "LEFT";
     }
     moveRight()
     {
         this.x += this.spd;
-        this.state = "WALK";
+        if (this.state != "JUMP") this.state = "WALK";
         this.dir = "RIGHT";
     }
     moveUp()
@@ -128,6 +128,8 @@ class Player extends Obj
         {
             this.vy = 0;
             this.y -= this.spd;
+            this.motion += 0.25;
+            this.motion %= 4;
             this.state = "CLIMB";
         }
         else if (this.state == "CLIMB")
@@ -142,6 +144,8 @@ class Player extends Obj
         {
             this.vy = 0;
             this.y += this.spd;
+            this.motion += 0.25;
+            this.motion %= 4;
             this.state = "CLIMB";
         }
         else if (this.state == "CLIMB")
