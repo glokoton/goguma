@@ -20,6 +20,7 @@
 }
 
 #menu_txt {
+    cursor: pointer;
 	padding: 20.5 4;
     float: right;
     font-weight: 600;
@@ -28,13 +29,23 @@
     margin: 0;
 }
 
-#ready_txt {
+#ready_txt_me {
     padding: 12 0;
     float: left;
     font-weight: 800;
     font-size: 22px;
     text-align: center;
     color: #FFFFFF;
+    margin: 0;
+}
+
+#ready_txt_other {
+    padding: 12 0;
+    float: left;
+    font-weight: 800;
+    font-size: 22px;
+    text-align: center;
+    color: #9E9E9E;
     margin: 0;
 }
 
@@ -69,7 +80,7 @@
     top: 12%;
 }
 
-#btn_ready_wait {
+#btn_ready_wait_me {
     cursor: pointer;
     padding: 0;
     margin: 0;
@@ -78,6 +89,16 @@
     left: 8%;
     top: calc(40% - 100px);
     background: #ffc43d;
+}
+
+#btn_ready_wait_other {
+    padding: 0;
+    margin: 0;
+    width: 84%;
+    height: 53px;
+    left: 8%;
+    top: calc(40% - 100px);
+    background: #EEEEEE;
 }
 
 #footer {

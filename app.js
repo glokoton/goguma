@@ -34,15 +34,13 @@ io.sockets.on('connection', function(socket)
     /* --ROOM_CONN-- */
     var roomNum = Room.connRoom(ROOM_LIST, socket.id);
 
-    
-
     socket.on('initRoom', function () {
-        for (var i = 0; i < ROOM_LIST[roomNum].player_list.length; i++) {
-            var tmpSocketId = ROOM_LIST[roomNum].player_list[i];
-            SOCKET_LIST[tmpSocketId].emit('initRoom', {id: tmpSocketId, list: ROOM_LIST[roomNum]});
-        }
-        
-        socket.emit('initRoom', {id: socket.id, list: ROOM_LIST[roomNum]});
+        Room.initRoom(ROOM_LIST, roomNum, SOCKET_LIST);
+    });
+
+    socket.on('toggleReady', function() {
+        ROOM_LIST[roomNum].toggleReady(socket.id);
+        Room.initRoom(ROOM_LIST, roomNum, SOCKET_LIST);
     });
     
 
@@ -71,6 +69,11 @@ io.sockets.on('connection', function(socket)
 
         /* --ROOM_DISCONN-- */
         ROOM_LIST[roomNum].disconn(socket.id);
+        var tmpPlayerList = ROOM_LIST[roomNum].player_list;
+        if (tmpPlayerList.length > 0) {
+            SOCKET_LIST[tmpPlayerList[0]].emit('initRoom', {id: tmpPlayerList[0], list: ROOM_LIST[roomNum]});
+        }
+
     });
 });
 
