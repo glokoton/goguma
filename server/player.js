@@ -36,7 +36,7 @@ class Player extends Obj
         if (this.state != "JUMP")
         {
             // jump
-            if (this.pressJump || this.restrict != 1)
+            if (this.pressJump)
                 this.jump();
             // init state
             else if(this.state != "CLIMB")
@@ -168,9 +168,9 @@ class Player extends Obj
         var stage = mapData.stage;
         var height = mapData.map[stage].length;
         var width = mapData.map[stage][0].length;
-        for (var i = 0; i <= height; i++)
+        for (var i = 0; i < height; i++)
         {
-            for (var j = 0; j <= width; j++)
+            for (var j = 0; j < width; j++)
             {
                 if (mapData.map[stage][i][j] == 11)
                 {
