@@ -39,7 +39,7 @@ io.sockets.on('connection', function(socket)
     });
 
     socket.on('toggleReady', function() {
-        ROOM_LIST[roomNum].toggleReady(socket.id);
+        ROOM_LIST[roomNum].toggleReady(socket.id, SOCKET_LIST);
         Room.initRoom(ROOM_LIST, roomNum, SOCKET_LIST);
     });
     

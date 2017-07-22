@@ -53,6 +53,10 @@
 		document.getElementById('content_wrapper').innerHTML = iHtml;
 	});
 
+	socket.on('tickTime', function(data) {
+		console.log(data);
+	});
+
 	function clickReady() {
 		socket.emit('toggleReady');
 	}

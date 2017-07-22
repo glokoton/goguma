@@ -3,6 +3,8 @@ class Room {
         this.player_list = [];
         this.player_state = [];
         this.state = 'wait';
+        this.count = 5; // 5초 후 시작한다!
+        this.interval = '';
     }
 
     isValidate() {
@@ -11,6 +13,8 @@ class Room {
 
     start() {
         this.state = 'start';
+        // 시작
+        console.log("START!");
     }
 
     conn(id) {
@@ -33,11 +37,41 @@ class Room {
         }
     }
 
-    toggleReady(id) {
+    toggleReady(id, SOCKET_LIST) {
         if (this.player_list[0] === id) {
             this.player_state[0] = (this.player_state[0] === 'ready'? 'wait': 'ready');
         } else {
             this.player_state[1] = (this.player_state[1] === 'ready'? 'wait': 'ready');
+        }
+        
+        var cnt = 0;
+        cnt += (this.player_state[0] === 'ready'? 1: 0);
+        cnt += (this.player_state[1] === 'ready'? 1: 0);
+
+
+        if (cnt == 2) {
+            this.count = 5;
+            var that = this;
+
+            setTimeout(function(){
+               that.countStart(that.player_list, SOCKET_LIST);
+            }, 1000);
+        }
+    }
+
+    countStart(list, SOCKET_LIST) {
+        for (var i = 0; i < list.length; i++) {
+            var tmpSocketId = list[i];
+            SOCKET_LIST[tmpSocketId].emit('tickTime', {id: tmpSocketId, list: this});
+        }
+        this.count--;
+        if (this.count == 0) {
+            this.start();
+        } else {
+            var that = this;
+            setTimeout(function(){
+               that.countStart(list, SOCKET_LIST);
+            }, 1000);
         }
     }
 
