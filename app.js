@@ -36,6 +36,8 @@ io.sockets.on('connection', function(socket)
             PLAYER_LIST[socket.id].pressLeft = data.isPress;
         if (data.inputId === 'right')
             PLAYER_LIST[socket.id].pressRight = data.isPress;
+        if (data.inputId === 'jump')
+            PLAYER_LIST[socket.id].pressJump = data.isPress;
     });
 
     socket.on('disconnect', function() {
