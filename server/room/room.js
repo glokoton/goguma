@@ -5,6 +5,8 @@ class Room {
         this.state = 'wait';
         this.isTick = false;
         this.count = 5; // 5초 후 시작한다!
+        this.play_time = 0;
+        this.second = 0;
         this.interval = '';
     }
 
@@ -22,6 +24,8 @@ class Room {
             var tmpSocketId = this.player_list[i];
             SOCKET_LIST[tmpSocketId].emit('startGame');
         }
+        this.play_time = 0;
+        this.second = 0;
         this.state = 'start';
     }
 
@@ -99,6 +103,15 @@ class Room {
                 that.countStart(list, SOCKET_LIST, PLAYER_LIST);
             }, 1000);
         }
+    }
+
+    tick() {
+        this.play_time++;
+        if (this.play_time >= 40) {
+            this.play_time = 0;
+            this.second++;
+        }
+        return this.second;
     }
 
     static connRoom(list, id) {

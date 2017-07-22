@@ -94,7 +94,7 @@ setInterval(function() {
          
             }
 
-            pack = {player : player};
+            pack = {player : player, time: ROOM_LIST[i].tick()};
             SOCKET_LIST[ROOM_LIST[i].player_list[0]].emit('newPosition', pack);
             SOCKET_LIST[ROOM_LIST[i].player_list[1]].emit('newPosition', pack);
         }

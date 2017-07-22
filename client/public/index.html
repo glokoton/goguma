@@ -33,6 +33,7 @@
 
     socket.on('newPosition', function (data) {
         if (socketId == 0) return ;
+        console.log(data);
         context.clearRect(0, 0, 800, 600);
 
         for (var i = 0; i < data.player.length; i++) 
