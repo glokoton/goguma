@@ -98,9 +98,13 @@ io.sockets.on('connection', function(socket)
         
         var tmpPlayerList = ROOM_LIST[roomNum].player_list;
         if (tmpPlayerList.length > 0) {
-            if (ROOM_LIST[roomNum].state === 'wait')
+            if (ROOM_LIST[roomNum].state === 'wait'){
+                if (tmpPlayerList.length > 0) {
+                    SOCKET_LIST[tmpPlayerList[0]].emit('tickTime', {type: 'stop'});
+                }
+
                 SOCKET_LIST[tmpPlayerList[0]].emit('initRoom', {id: tmpPlayerList[0], list: ROOM_LIST[roomNum]});
-            else {
+            } else {
                 ROOM_LIST[roomNum].state = 'wait';
                 SOCKET_LIST[tmpPlayerList[0]].emit('goRoom');
                 ROOM_LIST[roomNum].player_list.splice(0, 1);

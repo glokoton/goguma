@@ -78,7 +78,7 @@ class Room {
 
 
         if (cnt == 2) {
-            this.count = 0;
+            this.count = 5;
             this.isTick = true;
             var that = this;
 
@@ -122,7 +122,7 @@ class Room {
 
     tick() {
         this.play_time++;
-        if (this.play_time >= 40) {
+        if (this.play_time >= 25) {
             this.play_time = 0;
             this.second++;
         }
