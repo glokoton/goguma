@@ -88,7 +88,7 @@ class Room {
 
 
         if (cnt == 2) {
-            /*
+            //*
             this.count = 5;
             /*/
             this.count = 0;
