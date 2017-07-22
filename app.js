@@ -22,6 +22,8 @@ var io = require('socket.io')(serv, {});
     SOCKET_LIST[socket.id] = socket;
     PLAYER_LIST[socket.id] = new Player(0, 0);
 
+    socket.emit('initGame', socket.id);
+
     socket.on('keyPress', function (data) {
         if (data.inputId === 'right') {
             console.log("right");
@@ -35,9 +37,8 @@ var io = require('socket.io')(serv, {});
     });
 
     socket.on('disconnect', function() {
-    delete SOCKET_LIST[socket.id];
-    delete PLAYER_LIST[socket.id];
-
+        delete SOCKET_LIST[socket.id];
+        delete PLAYER_LIST[socket.id];
     });
 });
 
