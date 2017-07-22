@@ -46,7 +46,22 @@ class Room {
             }
 
         } else if (this.state === 'start') {
-            // 후에 작성
+
+
+            if (this.player_list[0] === id) {
+                this.player_list.splice(0, 1);
+                this.player_state.splice(0, 1);
+            } else {
+                this.player_list.splice(1, 1);
+                this.player_state.splice(1, 1);
+            }
+
+            this.isTick = false;
+            this.count = 5; // 5초 후 시작한다!
+            this.play_time = 0;
+            this.second = 0;
+            this.interval = '';
+
         }
     }
 
