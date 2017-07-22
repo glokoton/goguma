@@ -17,31 +17,55 @@
 <div id="content">
 	<div id="left_background"></div>
 	<div id="right_background"></div>
-	<div class="max-container">
-		<div id="content_left" class="romm_content">
-			<div id="character" class="character_box">
-				<img src="../client/resource/player1.png" style="height: 100%;margin: auto;">
-			</div>
-			<div id="btn_ready_wait" class="box">
-				<p id="ready_txt" class="gothic_txt" style="width:100%; margin: 0 auto;">READY!</p>
-			</div>
-		</div>
-		<div id="content_right" class="romm_content">
-			<div id="character" class="character_box">
-				<img src="../client/resource/player2.png" style="height: 100%;margin: auto;">
-			</div>
-			<div id="btn_ready_wait" class="box">
-				<p id="ready_txt" class="gothic_txt" style="width:100%; margin: 0 auto;">READY!</p>
-			</div>
-		</div>
-	</div>
-	
+	<div id="content_wrapper" class="max-container"></div>
 </div>
 
 <div id="footer">
 	<div style="height: 100%;" class="max-container">
-	<p id="logo_txt" class="gothic_txt" style="width:100%; margin: 0 auto;">대기중입니다!</p>
+	<p id="footer_txt" class="gothic_txt big_txt" style="width:100%; margin: 0 auto;">대기중입니다!</p>
 	</div>
 </div>
+
+<script>
+	var socket = parent.socket;
+	var id;
+
+	socket.emit('initRoom');
+    socket.on('initRoom', function(data) {
+		id = data.id;
+		var tmpList = data.list.player_list;
+		var tmpState = data.list.player_state;
+		var iHtml = '';
+		for (var i = 0; i < tmpList.length; i++) {
+			iHtml += '<div id="content_' + (i==0? 'left': 'right') + '" class="romm_content">';
+			iHtml += 	'<div id="character" class="character_box">';
+			iHtml += 		'<img src="../client/resource/player' + i + '.png" style="height: 100%;margin: auto;">'
+			iHtml += 	'</div>';
+			iHtml += 	'<div id="btn_ready_wait_' + (id==tmpList[i]? 'me': 'other') + '" class="box"' +
+							 (id==tmpList[i]? 'onclick="clickReady();"': '') + '>';
+			iHtml += 		'<p id="ready_txt_' + (id==tmpList[i]? 'me': 'other') + '" class="gothic_txt" style="width:100%; margin: 0 auto;">'
+								+ (tmpState[i]==='wait'? '대기 중': '준비 완료') + '</p>';
+			iHtml += 	'</div>';
+			iHtml += '</div>'
+		}
+		document.getElementById('content_wrapper').innerHTML = iHtml;
+	});
+
+	socket.on('tickTime', function(data) {
+		var iHtml = '';
+		if (data.type === "play") {
+			iHtml = data.time + '초 후 시작합니다!';
+		} else {
+			iHtml = '대기중입니다!';
+		}
+		document.getElementById('footer_txt').innerHTML = iHtml;
+	});
+
+	function clickReady() {
+		socket.emit('toggleReady');
+	}
+
+	
+</script>
 
 </html>

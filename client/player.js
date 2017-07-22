@@ -1,12 +1,11 @@
 class Player extends Obj
 {
-    constructor(x, y, state, dir, motion, restrict)
+    constructor(x, y, state, dir, motion)
     {
 		super(x, y);
 		this.state = state;
 		this.dir = dir;
 		this.motion = motion;
-        this.restrict = restrict;
     }
 
     setScreen(scr, mapSize)
