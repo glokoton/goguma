@@ -125,8 +125,16 @@ setInterval(function() {
 
             for (var tmpPlayer = 0; tmpPlayer < ROOM_LIST[i].player_list.length; tmpPlayer++) {
                 var tmpId = ROOM_LIST[i].player_list[tmpPlayer];
+                var partnerId = ROOM_LIST[i].player_list[1-tmpPlayer];
+                /* restrict 5 : only jump move */
+                if (PLAYER_LIST[tmpId].restrict == 5 && PLAYER_LIST[partnerId].state !== "JUMP") {
+                    PLAYER_LIST[tmpId].pressLeft = false;
+                    PLAYER_LIST[tmpId].pressRight = false;
+                }
+
                 player.push(Player.updateList(PLAYER_LIST[tmpId], tmpId));
-                /* restrict 4 : jump die */
+
+                /* restrict 3 : jump die */
                 if (PLAYER_LIST[tmpId].restrict == 3 && PLAYER_LIST[tmpId].state === "JUMP") {
                     if (ROOM_LIST[i].play_time > 10)
                         ROOM_LIST[i].isGameOver = true;

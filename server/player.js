@@ -126,7 +126,7 @@ class Player extends Obj
 
     moveLeft()
     {
-        if(this.x - this.spd > 0 && this.x - this.spd < mapData.map[0][0].length * 30 - 20)
+        if(this.x - this.spd > 0 && this.x - this.spd < mapData.map[this.stage][0].length * 30 - 20)
         {
             this.x -= this.spd;
             if (this.state != "JUMP") this.state = "WALK";
@@ -136,7 +136,7 @@ class Player extends Obj
     }
     moveRight()
     {
-        if(this.x + this.spd > 0 && this.x + this.spd < mapData.map[0][0].length * 30 - 40)
+        if(this.x + this.spd > 0 && this.x + this.spd < mapData.map[this.stage][0].length * 30 - 40)
         {
             this.x += this.spd;
             if (this.state != "JUMP") this.state = "WALK";

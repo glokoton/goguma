@@ -8,7 +8,6 @@ class MapData
 
     getSize()
     {
-        console.log(this.stage);
         return {width: this.map[this.stage][0].length * 30, height: this.map[this.stage].length * 30};
     }
 
