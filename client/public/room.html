@@ -9,7 +9,7 @@
 <div id="header">
 	<div style="height: 100%;" class="max-container">
 	<p id="logo_txt" class="gothic_txt">GOGUMA</p>
-	<p id="menu_txt" class="gothic_txt">다른 방 가기</p>
+	<p id="menu_txt" class="gothic_txt" onclick="changeRoom()">다른 방 가기</p>
 	</div>
 </div>
 
@@ -65,6 +65,9 @@
 		socket.emit('toggleReady');
 	}
 
+	function changeRoom() {
+		socket.emit('changeRoom');
+	}
 	
 </script>
 
