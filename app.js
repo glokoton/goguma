@@ -142,7 +142,7 @@ setInterval(function() {
                 }
             }
 
-            pack = {player : player, time: ROOM_LIST[i].tick(SOCKET_LIST)};
+            pack = {player : player, time: ROOM_LIST[i].tick(SOCKET_LIST, PLAYER_LIST)};
             SOCKET_LIST[tmpList[0]].emit('newPosition', pack);
             SOCKET_LIST[tmpList[1]].emit('newPosition', pack);
         }

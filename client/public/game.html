@@ -10,7 +10,7 @@
     var socket = io();
 
     socket.on('startGame', function(name, data) {
-        document.getElementById('game_frame').src = "http://10.10.10.138/game";
+        document.getElementById('game_frame').src = "http://10.10.10.102/game";
         
 		document.getElementById('game_frame').onload = function() {
 		 	socket.emit('initGame');
@@ -19,7 +19,7 @@
 
     socket.on('goRoom', function() {
         console.log("called");
-        document.getElementById('game_frame').src = "http://10.10.10.138/room";
+        document.getElementById('game_frame').src = "http://10.10.10.102/room";
         
 		document.getElementById('game_frame').onload = function() {
 		 	socket.emit('goRoom');
@@ -27,6 +27,6 @@
     });
 </script>
 
-<iframe id="game_frame" src="http://10.10.10.138/room"></iframe>
+<iframe id="game_frame" src="http://10.10.10.102/room"></iframe>
 
 </html>

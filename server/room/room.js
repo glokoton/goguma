@@ -135,13 +135,17 @@ class Room {
         }
     }
 
-    tick(SOCKET_LIST) {
+    tick(SOCKET_LIST, PLAYER_LIST) {
         this.play_time++;
         if (this.play_time >= 25) {
             this.play_time = 0;
             this.second++;
             if(this.timeLimit && !this.isGameOver) {
-                SOCKET_LIST[this.player_list[1]].emit('limitTime', 60 - this.second);
+                var i;
+                for(i = 0; i < this.player_list.length; i++) {
+                    if(PLAYER_LIST[this.player_list[i]].getRestrict() == 'Limit 1 miniute') break;
+                }
+                SOCKET_LIST[this.player_list[i]].emit('limitTime', 60 - this.second);
                 if(this.second == 60){
                     this.gameOver();
                 }

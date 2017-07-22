@@ -78,7 +78,7 @@
         }
         Player.list[socketId].print(img, scr, context);
         context.fillText(restrictString, 100, 100);
-        if(restTime != undefined)
+        if(restrictString == 'Limit 1 miniute' && restTime != undefined)
         {
             context.fillText(restTime.toString(), 400, 50);
         }
@@ -95,6 +95,13 @@
     socket.on('limitTime', function(time) {
         restTime = time;
     });
+
+    socket.on('setStrict', function(restrict) {
+        restrictString = restrict;
+        if(restrict != 'Limit 1 miniute'){
+            restTime = undefined;
+        }
+    })
 
     document.onkeydown = function(event) {
         if(event.keyCode === 39)
