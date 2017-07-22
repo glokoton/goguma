@@ -49,6 +49,17 @@ io.sockets.on('connection', function(socket)
         socket.emit('initGame', socket.id, PLAYER_LIST[socket.id].getRestrict(), mapData.map);
     });
 
+    socket.on('restart', function() {
+        ROOM_LIST[roomNum].refresh();
+
+        for (var i = 0; i < 2; i++) {
+            PLAYER_LIST[ROOM_LIST[roomNum].player_list[i]].setPosition(i);
+            PLAYER_LIST[ROOM_LIST[roomNum].player_list[i]].setRestrict(i);
+        }
+
+        socket.emit('initGame', socket.id, PLAYER_LIST[socket.id].getRestrict(), mapData.map);
+    });
+
     socket.on('keyPress', function (data)
     {
         if (data.inputId === 'up')
