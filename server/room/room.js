@@ -13,12 +13,12 @@ class Room {
     }
 
     start(SOCKET_LIST) {
-        this.state = 'start';
         // 시작
         for (var i = 0; i < this.player_list.length; i++) {
             var tmpSocketId = this.player_list[i];
             SOCKET_LIST[tmpSocketId].emit('startGame');
         }
+        this.state = 'start';
     }
 
     conn(id) {
