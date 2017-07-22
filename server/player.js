@@ -25,8 +25,8 @@ class Player extends Obj
 
     update()
     {
-        // add gravity
-        this.gravity();
+            // add gravity
+            this.gravity();
 
         // init state
         if (this.state != "JUMP")
@@ -39,17 +39,23 @@ class Player extends Obj
             else
                 this.state = "IDLE";
         }
-
+        
         // move player
         if (this.pressLeft)
         {
-            this.x -= this.spd;
+            if(this.x - this.spd > 0 && this.x - this.spd < mapData.map[0][0].length * 30 - 20)
+            {
+                this.x -= this.spd;
+            }
             this.state = "WALK";
             this.dir = "LEFT";
         }
         if (this.pressRight)
         {
-            this.x += this.spd;
+            if(this.x + this.spd > 0 && this.x + this.spd < mapData.map[0][0].length * 30 - 20)
+            {
+                this.x += this.spd;
+            }
             this.state = "WALK";
             this.dir = "RIGHT";
         }
@@ -66,9 +72,9 @@ class Player extends Obj
     gravity()
     {
         var fy = Math.floor( (this.y+24) / 30 );
-        /* 1ÀÇ ¼Óµµ·Î Áß·Â °¡¼Ó */
+        /* 1ï¿½ï¿½ ï¿½Óµï¿½ï¿½ï¿½ ï¿½ß·ï¿½ ï¿½ï¿½ï¿½ï¿½ */
         if( this.vy < 20 ) this.vy += 1.5;
-        /* yÀ§Ä¡¿¡ ¼Ó·ÂÀ» ´õÇÑ´Ù. */
+        /* yï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ó·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½. */
         this.y += this.vy;
     
         var x = Math.floor( (this.x+32) / 30 );
@@ -76,16 +82,16 @@ class Player extends Obj
         var rx = Math.floor( (this.x+40) / 30 );
         var y = Math.floor( (this.y-24) / 30 );
     
-        /* ÃµÀå¿¡ ´êÀ» ¶§ */
-        if( ( mapData.map[0][y+1][x] == 1 || mapData.map[0][y+1][lx] == 1 || mapData.map[0][y+1][rx] == 1 ) && this.vy < 0 ){
+        /* Ãµï¿½å¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ */
+        if( (y + 1 > 0 && y + 1 < mapData.map[0].length - 1) && (( mapData.map[0][y+1][x] == 1 || mapData.map[0][y+1][lx] == 1 || mapData.map[0][y+1][rx] == 1 ) && this.vy < 0) ){
             this.y = y*30 + 48;
             this.vy = 0;
             return;
         }
     
         y = Math.floor( (this.y+24) / 30 );
-        /* ¹Ù´Ú¿¡ ´êÀ» ¶§ ( ¹Ù·Î ¹Ø¿¡ ¶¥ÀÌ ÀÖ´Ù && ¶³¾îÁö°í ÀÖ´Ù && ¹Ù´ÚÀ» Åë°úÇÏÁö ¾Ê¾Ò´Ù )*/
-        if( ( mapData.map[0][y+1][x] != 0 || mapData.map[0][y+1][lx] != 0 || mapData.map[0][y+1][rx] != 0 ) && this.vy > 0 && this.y - this.vy <= y*30 - 24 ){
+        /* ï¿½Ù´Ú¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ( ï¿½Ù·ï¿½ ï¿½Ø¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ && ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ && ï¿½Ù´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò´ï¿½ )*/
+        if( (y + 1 > 0 && y + 1 < mapData.map[0].length - 1) && (( mapData.map[0][y+1][x] != 0 || mapData.map[0][y+1][lx] != 0 || mapData.map[0][y+1][rx] != 0 ) && this.vy > 0 && this.y - this.vy <= y*30 - 24 )){
             this.y = y*30 - 24;
             this.vy = 0;
             if( this.state == "JUMP" ){

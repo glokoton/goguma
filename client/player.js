@@ -11,29 +11,13 @@ class Player extends Obj
 
     setScreen(scr, mapSize)
     {
-        // if(this.x < 400){
-        //     scr.x = 0;
-        // }else if(this.x > mapSize.width - 420){
-        //     scr.x = mapSize.width - 820;
-        // }else{
-        //     scr.x = this.x - 400;
-        // }
-
-        // if(this.y < mapSize.height / 2 ){
-        //     scr.y = mapSize.height / 10;
-        // }else if(this.y > mapSize.height - 750){
-        //     scr.y = mapSize.height - 750;
-        // }else{
-        //     scr.y = this.y - 300;
-        // }
-
-        if(mapSize.width <= 800){
+        if(mapSize.width <= 800 || scr.x == undefined){
             scr.x = 0;
         }
         else if(this.x >= 400 && this.x <= mapSize.width - 420){
             scr.x = this.x - 400;
         }
-        if(mapSize.height <= 700){
+        if(mapSize.height <= 700 || scr.y == undefined){
             scr.y = 0;
         }else if(this.y >= 400 && this.y <= mapSize.height - 320){
             scr.y = this.y - 300;
