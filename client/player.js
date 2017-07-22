@@ -20,11 +20,9 @@ class Player extends Obj
         context.save();
 
         var w = 32, h = 48;
-        var x = this.x - w/2;
-        var y = this.y - h/2;
+        var x = this.x - w/2 - scr.x;
+        var y = this.y - h/2 - scr.y;
         var m = Math.floor(this.motion);
-        //this.x -= scr.x;
-        //this.y -= scr.y;
 
         /* if direction is left, reverse the canvas */
         if (this.state == "IDLE_LEFT" || this.state == "WALK_LEFT"){
@@ -35,8 +33,6 @@ class Player extends Obj
 
         context.drawImage(img.player, m*w, 0, w, h, x, y, w, h);
 
-        //this.x += scr.x;
-        //this.y += scr.y;
         /* restore canvas */
         context.restore();
     }

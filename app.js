@@ -1,5 +1,7 @@
 'use strict';
 
+const mapData = require(__dirname + '/server/mapdata/mapdata.json');
+
 var express = require('express');
 var app = express();
 var serv = require('http').Server(app);
@@ -22,7 +24,7 @@ io.sockets.on('connection', function(socket)
     SOCKET_LIST[socket.id] = socket;
     PLAYER_LIST[socket.id] = new Player();
 
-    socket.emit('initGame', socket.id);
+    socket.emit('initGame', socket.id, mapData.map);
 
     socket.on('keyPress', function (data)
     {

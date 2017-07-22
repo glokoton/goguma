@@ -59,7 +59,8 @@ class Player extends Obj
             list[i].update();
 
             pack.push({
-            // pack Player
+                // pack Player
+                id: i,
                 x: list[i].x,
                 y: list[i].y,
                 state: list[i].state,

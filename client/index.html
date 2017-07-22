@@ -10,6 +10,7 @@
 
 <script type = "text/javascript" src = "./client/obj.js"></script>
 <script type = "text/javascript" src = "./client/player.js"></script>
+<script type = "text/javascript" src = "./client/map.js"></script>
 
 <script>
     var context = document.getElementById("context").getContext("2d");
@@ -19,10 +20,13 @@
 
     Player.list = {};
     var scr = new Object();
+    var mapData;
 
     var img = new Object();
     img.player = new Image();
     img.player.src = "./client/image/player.png";
+    img.tile = new Image();
+    img.tile.src = "./client/image/tile.png";
 
     socket.on('newPosition', function (data) {
         context.clearRect(0, 0, 800, 600);
@@ -43,14 +47,28 @@
             }
         }
 
+        Player.list[socketId].setScreen(scr);
+
+        mapData.print(img, scr, context);
+
         for (var i = 0; i < data.player.length; i++)
         {
+            if (socketId == data.player[i].id) continue;
             Player.list[data.player[i].id].print(img, scr, context);
         }
+        Player.list[socketId].print(img, scr, context);
     });
 
-    socket.on('initGame', function(id) {
+    socket.on('initGame', function(id, map) {
         socketId = id;
+
+        mapData = new MapData(map);
+
+        /*for (var i = 0; i < map.length; i++) {
+            for (var j = 0; j < map[i].length; j++) {
+                mapData.map = map[0][i][j];
+            }
+        }*/
     });
 
     document.onkeydown = function(event) {
