@@ -88,7 +88,9 @@ class Player extends Obj
         /* when touch floor */
         if( (y + 1 > 0 && y + 1 < mapData.map[0].length - 1) &&
                 ( ( ( mapData.map[0][y+1][x] != 0 || mapData.map[0][y+1][lx] != 0 || mapData.map[0][y+1][rx] != 0) &&
-                    ( mapData.map[0][y+1][x] != 3 && mapData.map[0][y+1][lx] != 3 && mapData.map[0][y+1][rx] != 3) ) &&
+                    ( mapData.map[0][y+1][x] != 3 && mapData.map[0][y+1][lx] != 3 && mapData.map[0][y+1][rx] != 3) &&
+                    ( mapData.map[0][y+1][x] != 11 && mapData.map[0][y+1][lx] != 11 && mapData.map[0][y+1][rx] != 11) &&
+                    ( mapData.map[0][y+1][x] != 12 && mapData.map[0][y+1][lx] != 12 && mapData.map[0][y+1][rx] != 12) ) &&
                     this.vy > 0 && this.y - this.vy <= y*30 - 24 ) ){
             this.y = y*30 - 24;
             this.vy = 0;
@@ -105,6 +107,18 @@ class Player extends Obj
         this.state = "JUMP";
     }
 
+    checkObstacle()
+    {
+        var stage = mapData.stage;
+        var x = Math.floor( (this.x+16) / 30 );
+        var y = Math.floor( (this.y+48) / 30 );
+        /* when touch obstacle */
+        if (mapData.map[stage][y][x] == 1 || mapData.map[stage][y][x] == 1)
+            this.x = x*30 + 12;
+        if (mapData.map[stage][y][x+1] == 1 || mapData.map[stage][y-1][x+1] == 1)
+            this.x = x*30 - 14;
+    }
+
     moveLeft()
     {
         if(this.x - this.spd > 0 && this.x - this.spd < mapData.map[0][0].length * 30 - 20)
@@ -112,15 +126,17 @@ class Player extends Obj
             this.x -= this.spd;
             if (this.state != "JUMP") this.state = "WALK";
         }
+        this.checkObstacle();
         this.dir = "LEFT";
     }
     moveRight()
     {
-        if(this.x + this.spd > 0 && this.x + this.spd < mapData.map[0][0].length * 30 - 20)
+        if(this.x + this.spd > 0 && this.x + this.spd < mapData.map[0][0].length * 30 - 40)
         {
             this.x += this.spd;
             if (this.state != "JUMP") this.state = "WALK";
         }
+        this.checkObstacle();
         this.dir = "RIGHT";
     }
     moveUp()
