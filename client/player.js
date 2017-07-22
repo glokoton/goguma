@@ -6,13 +6,22 @@ class Player extends Obj
 		this.state = state;
 		this.dir = dir;
 		this.motion = motion;
-        this.restrict = restrict; // 제한사항 내용
+        this.restrict = restrict;
     }
 
-    setScreen(scr)
+    setScreen(scr, mapSize)
     {
-        scr.x = this.x - 400;
-        scr.y = this.y - 300;
+        if(mapSize.width <= 800 || scr.x == undefined){
+            scr.x = 0;
+        }
+        else if(this.x >= 400 && this.x <= mapSize.width - 420){
+            scr.x = this.x - 400;
+        }
+        if(mapSize.height <= 700 || scr.y == undefined){
+            scr.y = 0;
+        }else if(this.y >= 400 && this.y <= mapSize.height - 320){
+            scr.y = this.y - 300;
+        }
     }
 
     print(img, scr, context)
@@ -32,7 +41,12 @@ class Player extends Obj
             x -= 32;
         }
 
-        context.drawImage(img.player, m*w, 0, w, h, x, y, w, h);
+        if (this.state == "JUMP")
+            context.drawImage(img.player, 0, 2*h, w, h, x, y, w, h);
+        else if (this.state == "CLIMB")
+            context.drawImage(img.player, m*w, h, w, h, x, y, w, h);
+        else
+            context.drawImage(img.player, m*w, 0, w, h, x, y, w, h);
 
         /* restore canvas */
         context.restore();

@@ -70,6 +70,9 @@ io.sockets.on('connection', function(socket)
         delete SOCKET_LIST[socket.id];
         delete PLAYER_LIST[socket.id];
 
+        /* --PLAYER_DISCONN-- */
+        delete PLAYER_LIST[socket.id];
+
         /* --ROOM_DISCONN-- */
         ROOM_LIST[roomNum].disconn(socket.id);
         var tmpPlayerList = ROOM_LIST[roomNum].player_list;
