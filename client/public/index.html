@@ -39,8 +39,11 @@
     img.building = new Image();
     img.building.src = "./client/image/building.png";
 
+    var restTime;
+
     socket.on('newPosition', function (data) {
         if (socketId == 0) return ;
+
         context.clearRect(0, 0, 800, 600);
 
         for (var i = 0; i < data.player.length; i++) 
@@ -73,6 +76,10 @@
         }
         Player.list[socketId].print(img, scr, context);
         context.fillText(restrictString, 100, 100);
+        if(restTime != undefined)
+        {
+            context.fillText(restTime.toString(), 400, 50);
+        }
     });
 
     socket.on('initGame', function(id, restrict, map) {
@@ -81,6 +88,10 @@
         mapData = new MapData(map);
         Star.delAllStar();
         for (var i = 1; i <= 1000; i++) Star.addStar();
+    });
+
+    socket.on('limitTime', function(time) {
+        restTime = time;
     });
 
     document.onkeydown = function(event) {

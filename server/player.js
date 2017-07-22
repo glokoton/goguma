@@ -34,7 +34,7 @@ class Player extends Obj
         if (this.state != "JUMP")
         {
             // jump
-            if (this.pressJump)
+            if (this.pressJump && this.restrict != 1)
                 this.jump();
             // init state
             else if(this.state != "CLIMB")
