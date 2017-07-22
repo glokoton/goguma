@@ -3,6 +3,7 @@ class Room {
         this.player_list = [];
         this.player_state = [];
         this.state = 'wait';
+        this.isTick = false;
         this.count = 5; // 5초 후 시작한다!
         this.interval = '';
     }
@@ -23,6 +24,7 @@ class Room {
     }
 
     disconn(id) {
+        this.isTick = false;
         if (this.state === 'wait') {
             if (this.player_list[0] === id) {
                 this.player_list.splice(0, 1);
@@ -51,21 +53,38 @@ class Room {
 
         if (cnt == 2) {
             this.count = 5;
+            this.isTick = true;
             var that = this;
 
             setTimeout(function(){
                that.countStart(that.player_list, SOCKET_LIST);
             }, 1000);
+        } else {
+            this.isTick = false;
+            for (var i = 0; i < this.player_list.length; i++) {
+                var tmpSocketId = this.player_list[i];
+                SOCKET_LIST[tmpSocketId].emit('tickTime', {type: 'stop'});
+            }
+            
         }
     }
 
     countStart(list, SOCKET_LIST) {
         for (var i = 0; i < list.length; i++) {
             var tmpSocketId = list[i];
-            SOCKET_LIST[tmpSocketId].emit('tickTime', {id: tmpSocketId, list: this});
+            if (this.isTick) {
+                SOCKET_LIST[tmpSocketId].emit('tickTime', {type: 'play', time: this.count});
+            }
+            
         }
+
+        if (!this.isTick) return ;
+
         this.count--;
-        if (this.count == 0) {
+
+        
+
+        if (this.count == -1) {
             this.start();
         } else {
             var that = this;

@@ -22,7 +22,7 @@
 
 <div id="footer">
 	<div style="height: 100%;" class="max-container">
-	<p id="logo_txt" class="gothic_txt" style="width:100%; margin: 0 auto;">대기중입니다!</p>
+	<p id="footer_txt" class="gothic_txt big_txt" style="width:100%; margin: 0 auto;">대기중입니다!</p>
 	</div>
 </div>
 
@@ -54,7 +54,13 @@
 	});
 
 	socket.on('tickTime', function(data) {
-		console.log(data);
+		var iHtml = '';
+		if (data.type === "play") {
+			iHtml = data.time + '초 후 시작합니다!';
+		} else {
+			iHtml = '대기중입니다!';
+		}
+		document.getElementById('footer_txt').innerHTML = iHtml;
 	});
 
 	function clickReady() {

@@ -19,6 +19,16 @@
     margin: 0;
 }
 
+.big_txt {
+	padding: 16.5 4;
+    float: left;
+    font-weight: 800;
+    font-size: 18px;
+    color: #FFEE58;
+    margin: 0;
+}
+
+
 #menu_txt {
     cursor: pointer;
 	padding: 20.5 4;
