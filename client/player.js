@@ -1,9 +1,10 @@
 class Player extends Obj
 {
-    constructor(x, y, state, motion, restrict)
+    constructor(x, y, state, dir, motion, restrict)
     {
 		super(x, y);
 		this.state = state;
+		this.dir = dir;
 		this.motion = motion;
         this.restrict = restrict; // 제한사항 내용
     }
@@ -25,7 +26,7 @@ class Player extends Obj
         var m = Math.floor(this.motion);
 
         /* if direction is left, reverse the canvas */
-        if (this.state == "IDLE_LEFT" || this.state == "WALK_LEFT"){
+        if (this.dir == "LEFT"){
             context.scale( -1, 1 );
             x *= -1;
             x -= 32;

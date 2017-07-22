@@ -36,13 +36,14 @@
             if (Player.list[data.player[i].id] == null)
             {
                 var p = data.player[i];
-                Player.list[data.player[i].id] = new Player(p.x, p.y, p.state, p.motion, p.restrict);
+                Player.list[data.player[i].id] = new Player(p.x, p.y, p.state, p.dir, p.motion, p.restrict);
             }
             else
             {
                 Player.list[data.player[i].id].x = data.player[i].x;
                 Player.list[data.player[i].id].y = data.player[i].y;
                 Player.list[data.player[i].id].state = data.player[i].state;
+                Player.list[data.player[i].id].dir = data.player[i].dir;
                 Player.list[data.player[i].id].motion = data.player[i].motion;
             }
         }
@@ -63,12 +64,6 @@
         socketId = id;
 
         mapData = new MapData(map);
-
-        /*for (var i = 0; i < map.length; i++) {
-            for (var j = 0; j < map[i].length; j++) {
-                mapData.map = map[0][i][j];
-            }
-        }*/
     });
 
     document.onkeydown = function(event) {
@@ -79,7 +74,9 @@
         if(event.keyCode === 37)
             socket.emit('keyPress', {inputId:'left', isPress: true});
         if(event.keyCode === 38)
-            socket.emit('keyPress', {inputId:'up', isPress: true});
+            socket.emit('keyPress', { inputId: 'up', isPress: true });
+        if (event.keyCode === 32)
+            socket.emit('keyPress', { inputId: 'jump', isPress: true });
     }
     document.onkeyup = function(event) {
         if(event.keyCode === 39)
@@ -89,6 +86,8 @@
         if(event.keyCode === 37)
             socket.emit('keyPress', {inputId:'left', isPress: false});
         if(event.keyCode === 38)
-            socket.emit('keyPress', {inputId:'up', isPress: false});
+            socket.emit('keyPress', { inputId: 'up', isPress: false });
+        if (event.keyCode === 32)
+            socket.emit('keyPress', { inputId: 'jump', isPress: false });
     }
 </script>
