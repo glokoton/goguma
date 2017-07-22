@@ -12,9 +12,12 @@ class Room {
         return (this.player_list.length < 2? true: false);
     }
 
-    start(SOCKET_LIST) {
+    start(SOCKET_LIST, PLAYER_LIST) {
         // 시작
         for (var i = 0; i < this.player_list.length; i++) {
+            // set restrict
+            PLAYER_LIST[this.player_list[i]].setRestrict(i);
+
             var tmpSocketId = this.player_list[i];
             SOCKET_LIST[tmpSocketId].emit('startGame');
         }
@@ -42,7 +45,7 @@ class Room {
         }
     }
 
-    toggleReady(id, SOCKET_LIST) {
+    toggleReady(id, SOCKET_LIST, PLAYER_LIST) {
         if (this.player_list[0] === id) {
             this.player_state[0] = (this.player_state[0] === 'ready'? 'wait': 'ready');
         } else {
@@ -55,12 +58,12 @@ class Room {
 
 
         if (cnt == 2) {
-            this.count = 5;
+            this.count = 0;
             this.isTick = true;
             var that = this;
 
             setTimeout(function(){
-               that.countStart(that.player_list, SOCKET_LIST);
+                that.countStart(that.player_list, SOCKET_LIST, PLAYER_LIST);
             }, 1000);
         } else {
             this.isTick = false;
@@ -72,7 +75,7 @@ class Room {
         }
     }
 
-    countStart(list, SOCKET_LIST) {
+    countStart(list, SOCKET_LIST, PLAYER_LIST) {
         for (var i = 0; i < list.length; i++) {
             var tmpSocketId = list[i];
             if (this.isTick) {
@@ -88,11 +91,11 @@ class Room {
         
 
         if (this.count == -1) {
-            this.start(SOCKET_LIST);
+            this.start(SOCKET_LIST, PLAYER_LIST);
         } else {
             var that = this;
             setTimeout(function(){
-               that.countStart(list, SOCKET_LIST);
+                that.countStart(list, SOCKET_LIST, PLAYER_LIST);
             }, 1000);
         }
     }

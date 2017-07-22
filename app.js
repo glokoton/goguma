@@ -39,14 +39,14 @@ io.sockets.on('connection', function(socket)
     });
 
     socket.on('toggleReady', function() {
-        ROOM_LIST[roomNum].toggleReady(socket.id, SOCKET_LIST);
+        ROOM_LIST[roomNum].toggleReady(socket.id, SOCKET_LIST, PLAYER_LIST);
         Room.initRoom(ROOM_LIST, roomNum, SOCKET_LIST);
     });
     
     PLAYER_LIST[socket.id] = new Player();
 
     socket.on('initGame', function() {
-        socket.emit('initGame', socket.id, mapData.map);
+        socket.emit('initGame', socket.id, PLAYER_LIST[socket.id].getRestrict(), mapData.map);
     });
     
 
@@ -83,17 +83,19 @@ io.sockets.on('connection', function(socket)
     });
 });
 
-
-
-
 setInterval(function() {
-
-    var pack = {
-        player: Player.updateList(PLAYER_LIST),
-    }
-
     for (var i = 0; i < ROOM_LIST.length; i++) {
         if (ROOM_LIST[i].state === 'start') {
+            var pack = {};
+            var player = [];
+
+            for (var tmpPlayer = 0; tmpPlayer < ROOM_LIST[i].player_list.length; tmpPlayer++) {
+                var tmpId = ROOM_LIST[i].player_list[tmpPlayer];
+                player.push(Player.updateList(PLAYER_LIST[tmpId], tmpId));
+         
+            }
+
+            pack = {player : player};
             SOCKET_LIST[ROOM_LIST[i].player_list[0]].emit('newPosition', pack);
             SOCKET_LIST[ROOM_LIST[i].player_list[1]].emit('newPosition', pack);
         }

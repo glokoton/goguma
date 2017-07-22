@@ -13,7 +13,6 @@
 <script type = "text/javascript" src = "../client/map.js"></script>
 <script type = "text/javascript" src = "../client/star.js"></script>
 
-
 <script>
     var context = document.getElementById("context").getContext("2d");
 
@@ -22,7 +21,8 @@
 
 
     Player.list = {};
-    var scr = {x: 0, y: 0};
+    var scr = { x: 0, y: 0 };
+    var restrictString;
     var mapData;
 
     var img = new Object();
@@ -40,7 +40,7 @@
             var p = data.player[i];
             if (Player.list[p.id] == null)
             {
-                Player.list[p.id] = new Player(p.x, p.y, p.state, p.dir, p.motion, p.restrict);
+                Player.list[p.id] = new Player(p.x, p.y, p.state, p.dir, p.motion);
             }
             else
             {
@@ -62,11 +62,12 @@
             Player.list[data.player[i].id].print(img, scr, context);
         }
         Player.list[socketId].print(img, scr, context);
+        context.fillText(restrictString, 100, 100);
     });
 
-    socket.on('initGame', function(id, map) {
+    socket.on('initGame', function(id, restrict, map) {
         socketId = id;
-
+        restrictString = restrict;
         mapData = new MapData(map);
         for (var i = 1; i <= 1000; i++) Star.addStar();
     });
