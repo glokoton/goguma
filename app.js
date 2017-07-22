@@ -6,22 +6,34 @@ var express = require('express');
 var app = express();
 var serv = require('http').Server(app);
 
-app.get('/', function(req, res) {
-    res.sendFile(__dirname + '/client/index.html');
-});
+require('./routes')(app);
+
 app.use('/client', express.static(__dirname + '/client'));
 
 serv.listen(80);
 console.log("port : 80 open");
 
 var SOCKET_LIST = {};
+var ROOM_LIST = [];
+
+var PLAYER_LIST = {};
+const Player = require('./server/player.js');
 
 var DEBUG = true;
 
 var io = require('socket.io')(serv, {});
+
+const Room = require('./server/room/room.js');
+
+
 io.sockets.on('connection', function(socket)
 {
+    /* --SOCKET_CONN-- */
     SOCKET_LIST[socket.id] = socket;
+
+    /* --ROOM_CONN-- */
+    var roomNum = Room.connRoom(ROOM_LIST, socket.id);
+
     PLAYER_LIST[socket.id] = new Player();
 
     socket.emit('initGame', socket.id, mapData.map);
@@ -40,15 +52,17 @@ io.sockets.on('connection', function(socket)
             PLAYER_LIST[socket.id].pressJump = data.isPress;
     });
 
+
     socket.on('disconnect', function() {
+        /* --SOCKET_DISCONN-- */
         delete SOCKET_LIST[socket.id];
-        delete PLAYER_LIST[socket.id];
+
+        /* --ROOM_DISCONN-- */
+        ROOM_LIST[roomNum].disconn(socket.id);
     });
 });
 
 
-const Player = require('./server/player.js');
-var PLAYER_LIST = {};
 
 
 setInterval(function() {
