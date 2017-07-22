@@ -43,6 +43,12 @@ io.sockets.on('connection', function(socket)
         Room.initRoom(ROOM_LIST, roomNum, SOCKET_LIST);
     });
 
+    socket.on('changeRoom', function() {
+        ROOM_LIST[roomNum].disconn(socket.id);
+        roomNum = Room.connRoom(ROOM_LIST, socket.id);
+        Room.initRoom(ROOM_LIST, roomNum, SOCKET_LIST);
+    })
+
     socket.on('toggleReady', function() {
         ROOM_LIST[roomNum].toggleReady(socket.id, SOCKET_LIST, PLAYER_LIST);
         Room.initRoom(ROOM_LIST, roomNum, SOCKET_LIST);
