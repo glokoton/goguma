@@ -10,8 +10,6 @@ class Player extends Obj
     {   
         super(0, 0);
 
-        this.setPosition();
-
         this.state = "IDLE";
         this.dir = "RIGHT";
         this.motion = 0;
@@ -162,7 +160,7 @@ class Player extends Obj
             this.state = "IDLE";
     }
 
-    setPosition()
+    setPosition(id)
     {
         /* set first position */
         var stage = mapData.stage;
@@ -172,11 +170,10 @@ class Player extends Obj
         {
             for (var j = 0; j < width; j++)
             {
-                if (mapData.map[stage][i][j] == 11)
+                if (mapData.map[stage][i][j] == 11 + id)
                 {
                     this.x = j*30;
                     this.y = (i-1)*30;
-                    mapData.map[stage][i][j] = 0;
                     return;
                 }
             }
@@ -185,7 +182,6 @@ class Player extends Obj
 
     getRestrict()
     {
-        console.log(this.restrict);
         return restrictData.restrict[this.restrict];
     }
 

@@ -48,7 +48,6 @@ io.sockets.on('connection', function(socket)
     socket.on('initGame', function() {
         socket.emit('initGame', socket.id, PLAYER_LIST[socket.id].getRestrict(), mapData.map);
     });
-    
 
     socket.on('keyPress', function (data)
     {

@@ -15,7 +15,8 @@ class Room {
     start(SOCKET_LIST, PLAYER_LIST) {
         // 시작
         for (var i = 0; i < this.player_list.length; i++) {
-            // set restrict
+            // set position & restrict
+            PLAYER_LIST[this.player_list[i]].setPosition(i);
             PLAYER_LIST[this.player_list[i]].setRestrict(i);
 
             var tmpSocketId = this.player_list[i];
