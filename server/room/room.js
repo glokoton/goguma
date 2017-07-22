@@ -8,13 +8,15 @@ class Room {
         this.play_time = 0;
         this.second = 0;
         this.interval = '';
+        this.timeLimit = false;
+        this.isGameOver = false;
     }
 
     isValidate() {
         return (this.player_list.length < 2? true: false);
     }
 
-    start(SOCKET_LIST, PLAYER_LIST) {
+    start(SOCKET_LIST, PLAYER_LIST, stageIdx) {
         // 시작
         for (var i = 0; i < this.player_list.length; i++) {
             // set position & restrict
@@ -24,6 +26,13 @@ class Room {
             var tmpSocketId = this.player_list[i];
             SOCKET_LIST[tmpSocketId].emit('startGame');
         }
+
+        this.setStage(stageIdx);
+
+        if(this.stage == 0) {
+            this.timeLimit = true;
+        }
+
         this.play_time = 0;
         this.second = 0;
         this.state = 'start';
@@ -83,7 +92,7 @@ class Room {
             var that = this;
 
             setTimeout(function(){
-                that.countStart(that.player_list, SOCKET_LIST, PLAYER_LIST);
+                that.countStart(that.player_list, SOCKET_LIST, PLAYER_LIST, 0);
             }, 1000);
         } else {
             this.isTick = false;
@@ -95,7 +104,7 @@ class Room {
         }
     }
 
-    countStart(list, SOCKET_LIST, PLAYER_LIST) {
+    countStart(list, SOCKET_LIST, PLAYER_LIST, stageIdx) {
         for (var i = 0; i < list.length; i++) {
             var tmpSocketId = list[i];
             if (this.isTick) {
@@ -111,22 +120,37 @@ class Room {
         
 
         if (this.count == -1) {
-            this.start(SOCKET_LIST, PLAYER_LIST);
+            this.start(SOCKET_LIST, PLAYER_LIST, stageIdx);
         } else {
             var that = this;
             setTimeout(function(){
-                that.countStart(list, SOCKET_LIST, PLAYER_LIST);
+                that.countStart(list, SOCKET_LIST, PLAYER_LIST, stageIdx);
             }, 1000);
         }
     }
 
-    tick() {
+    tick(SOCKET_LIST) {
         this.play_time++;
         if (this.play_time >= 25) {
             this.play_time = 0;
             this.second++;
+            if(this.timeLimit && !this.isGameOver) {
+                SOCKET_LIST[this.player_list[1]].emit('limitTime', 60 - this.second);
+                if(this.second == 60){
+                    this.gameOver();
+                }
+            }
         }
         return this.second;
+    }
+
+    setStage(index) {
+        this.stage = index;
+    }
+
+    gameOver() {
+        console.log('This game is over!!');
+        this.isGameOver = true;
     }
 
     refresh() {
