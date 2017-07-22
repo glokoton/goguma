@@ -4,13 +4,16 @@
 
 <head>
 <link rel="stylesheet" type="text/css" href="../client/css/_default.css">
+<script type = "text/javascript" src = "../client/sound.js"></script>
+
 </head>
 
 <iframe id="game_frame"></iframe>
 
 <script>
     var socket = io();
-    var ip = "10.10.10.138";
+    var ip = "localhost";
+    playSndBackground();
 
     socket.on('startGame', function (name, data) {
         document.getElementById('game_frame').src = "http://" + ip + "/game";
