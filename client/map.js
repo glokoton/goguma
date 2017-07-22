@@ -30,7 +30,24 @@ class MapData
                 if(j < 1 || j >= this.map[this.stage][i].length) continue;
 			    
                 var tileType = this.map[this.stage][i][j] - 1;
-                context.drawImage( img.tile, tileType*30, 0, 30, 30, (j-1)*30-scr.x, (i-1)*30-scr.y, 30, 30 );
+                switch (tileType)
+                {
+                    case 0:
+                        context.drawImage( img.tile, tileType*30, 0, 30, 30, (j-1)*30-scr.x, (i-1)*30-scr.y, 30, 30 );
+                        break;
+                    case 1:
+                        context.drawImage( img.tile, tileType*30, 0, 30, 30, (j-1)*30-scr.x, (i-1)*30-scr.y, 30, 30 );
+                        break;
+                    case 2:
+                        context.drawImage( img.tile, tileType*30, 0, 30, 30, (j-1)*30-scr.x, (i-1)*30-scr.y, 30, 30 );
+                        break;
+                    case 3:
+                        context.drawImage( img.tile, tileType*30, 0, 30, 30, (j-1)*30-scr.x, (i-1)*30-scr.y, 30, 30 );
+                        break;
+                    case 8:
+                        context.drawImage( img.tile, 4*30, 0, 30, 30, (j-1)*30-scr.x, (i-1)*30-scr.y, 30, 30 );
+                        break;
+                }
             }
         }
     }

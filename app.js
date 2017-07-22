@@ -9,6 +9,7 @@ var serv = require('http').Server(app);
 require('./routes')(app);
 
 app.use('/client', express.static(__dirname + '/client'));
+app.use('/server', express.static(__dirname + '/server'));
 
 serv.listen(80);
 console.log("port : 80 open");
@@ -64,7 +65,7 @@ io.sockets.on('connection', function(socket)
         ROOM_LIST[roomNum].refresh();
 
         for (var i = 0; i < 2; i++) {
-            PLAYER_LIST[ROOM_LIST[roomNum].player_list[i]].setPosition(i);
+            PLAYER_LIST[ROOM_LIST[roomNum].player_list[i]].setPosition(i, ROOM_LIST[roomNum].stage);
             PLAYER_LIST[ROOM_LIST[roomNum].player_list[i]].setRestrict(i);
         }
 
@@ -126,12 +127,24 @@ setInterval(function() {
             for (var tmpPlayer = 0; tmpPlayer < ROOM_LIST[i].player_list.length; tmpPlayer++) {
                 var tmpId = ROOM_LIST[i].player_list[tmpPlayer];
                 player.push(Player.updateList(PLAYER_LIST[tmpId], tmpId));
-         
+            }
+
+            var tmpList = ROOM_LIST[i].player_list;
+            if (PLAYER_LIST[tmpList[0]].isGoal() && PLAYER_LIST[tmpList[1]].isGoal())
+            {
+                ROOM_LIST[i].goNextStage();
+                ROOM_LIST[i].refresh();
+
+                for (var j = 0; j < 2; j++) {
+                    PLAYER_LIST[tmpList[j]].setPosition(j, ROOM_LIST[i].stage);
+                    PLAYER_LIST[tmpList[j]].setRestrict(j);
+                    SOCKET_LIST[tmpList[j]].emit('initGame', tmpList[j], PLAYER_LIST[tmpList[j]].getRestrict(), mapData.map);
+                }
             }
 
             pack = {player : player, time: ROOM_LIST[i].tick(SOCKET_LIST)};
-            SOCKET_LIST[ROOM_LIST[i].player_list[0]].emit('newPosition', pack);
-            SOCKET_LIST[ROOM_LIST[i].player_list[1]].emit('newPosition', pack);
+            SOCKET_LIST[tmpList[0]].emit('newPosition', pack);
+            SOCKET_LIST[tmpList[1]].emit('newPosition', pack);
         }
     }
 

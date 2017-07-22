@@ -3,6 +3,7 @@ class Room {
         this.player_list = [];
         this.player_state = [];
         this.state = 'wait';
+        this.stage = 0;
         this.isTick = false;
         this.count = 5; // 5초 후 시작한다!
         this.play_time = 0;
@@ -20,7 +21,7 @@ class Room {
         // 시작
         for (var i = 0; i < this.player_list.length; i++) {
             // set position & restrict
-            PLAYER_LIST[this.player_list[i]].setPosition(i);
+            PLAYER_LIST[this.player_list[i]].setPosition(i, this.stage);
             PLAYER_LIST[this.player_list[i]].setRestrict(i);
 
             var tmpSocketId = this.player_list[i];
@@ -67,6 +68,7 @@ class Room {
 
             this.isTick = false;
             this.count = 5; // 5초 후 시작한다!
+            this.stage = 0;
             this.play_time = 0;
             this.second = 0;
             this.interval = '';
@@ -87,7 +89,11 @@ class Room {
 
 
         if (cnt == 2) {
+            /*
             this.count = 5;
+            /*/
+            this.count = 0;
+            //*/
             this.isTick = true;
             var that = this;
 
@@ -143,6 +149,11 @@ class Room {
         }
         return this.second;
     }
+
+    goNextStage() {
+        this.setStage(this.stage + 1);
+    }
+
 
     setStage(index) {
         this.stage = index;
