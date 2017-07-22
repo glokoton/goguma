@@ -38,6 +38,11 @@ io.sockets.on('connection', function(socket)
         Room.initRoom(ROOM_LIST, roomNum, SOCKET_LIST);
     });
 
+    socket.on('goRoom', function () {
+        roomNum = Room.connRoom(ROOM_LIST, socket.id);
+        Room.initRoom(ROOM_LIST, roomNum, SOCKET_LIST);
+    });
+
     socket.on('toggleReady', function() {
         ROOM_LIST[roomNum].toggleReady(socket.id, SOCKET_LIST, PLAYER_LIST);
         Room.initRoom(ROOM_LIST, roomNum, SOCKET_LIST);
@@ -78,17 +83,26 @@ io.sockets.on('connection', function(socket)
     socket.on('disconnect', function() {
         /* --SOCKET_DISCONN-- */
         delete SOCKET_LIST[socket.id];
-        delete PLAYER_LIST[socket.id];
 
         /* --PLAYER_DISCONN-- */
         delete PLAYER_LIST[socket.id];
 
         /* --ROOM_DISCONN-- */
         ROOM_LIST[roomNum].disconn(socket.id);
+        
         var tmpPlayerList = ROOM_LIST[roomNum].player_list;
         if (tmpPlayerList.length > 0) {
-            SOCKET_LIST[tmpPlayerList[0]].emit('initRoom', {id: tmpPlayerList[0], list: ROOM_LIST[roomNum]});
+            if (ROOM_LIST[roomNum].state === 'wait')
+                SOCKET_LIST[tmpPlayerList[0]].emit('initRoom', {id: tmpPlayerList[0], list: ROOM_LIST[roomNum]});
+            else {
+                ROOM_LIST[roomNum].state = 'wait';
+                SOCKET_LIST[tmpPlayerList[0]].emit('goRoom');
+                ROOM_LIST[roomNum].player_list.splice(0, 1);
+                ROOM_LIST[roomNum].player_state.splice(0, 1);
+            }
+
         }
+        
 
     });
 });
