@@ -12,10 +12,13 @@ class Room {
         return (this.player_list.length < 2? true: false);
     }
 
-    start() {
+    start(SOCKET_LIST) {
         this.state = 'start';
         // 시작
-        console.log("START!");
+        for (var i = 0; i < this.player_list.length; i++) {
+            var tmpSocketId = this.player_list[i];
+            SOCKET_LIST[tmpSocketId].emit('startGame');
+        }
     }
 
     conn(id) {
@@ -85,7 +88,7 @@ class Room {
         
 
         if (this.count == -1) {
-            this.start();
+            this.start(SOCKET_LIST);
         } else {
             var that = this;
             setTimeout(function(){

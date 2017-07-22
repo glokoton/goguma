@@ -32,8 +32,6 @@
 
 	socket.emit('initRoom');
     socket.on('initRoom', function(data) {
-		// room init
-		console.log(data);
 		id = data.id;
 		var tmpList = data.list.player_list;
 		var tmpState = data.list.player_state;
