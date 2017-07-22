@@ -36,6 +36,7 @@
 		var tmpList = data.list.player_list;
 		var tmpState = data.list.player_state;
 		var iHtml = '';
+
 		for (var i = 0; i < tmpList.length; i++) {
 			iHtml += '<div id="content_' + (i==0? 'left': 'right') + '" class="romm_content">';
 			iHtml += 	'<div id="character" class="character_box">';
@@ -48,7 +49,9 @@
 			iHtml += 	'</div>';
 			iHtml += '</div>'
 		}
+		
 		document.getElementById('content_wrapper').innerHTML = iHtml;
+		setClickReady();
 	});
 
 	socket.on('tickTime', function(data) {
@@ -61,7 +64,19 @@
 		document.getElementById('footer_txt').innerHTML = iHtml;
 	});
 
+	function setClickReady() {
+		var mybtn  = document.getElementById('btn_ready_wait_me');
+		mybtn.onclick = '';
+		mybtn.style.background = "#cc9f39"
+
+		setTimeout(function(){
+			mybtn.onclick = function onclick(event) {clickReady();};
+			mybtn.style.background = "#ffc43d";
+		}, 1000);
+			
+	}
 	function clickReady() {
+
 		socket.emit('toggleReady');
 	}
 
