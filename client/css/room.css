@@ -1,6 +1,6 @@
 #header {
-    position:relative;
-    z-index:2;
+    position: relative;
+    z-index: 2;
 	top: 0;
 	width: 100%;
 	height: 57px;
@@ -26,7 +26,19 @@
     font-size: 12px;
     color: #FFFFFF;
     margin: 0;
+    cursor: pointer;
 }
+
+#ready_txt {
+    padding: 12 0;
+    float: left;
+    font-weight: 800;
+    font-size: 22px;
+    text-align: center;
+    color: #FFFFFF;
+    margin: 0;
+}
+
 
 #content {
     height: calc(100% - 114px);
@@ -59,17 +71,19 @@
 }
 
 #btn_ready_wait {
+    cursor: pointer;
     padding: 0;
     margin: 0;
     width: 84%;
-    height: 16%;
+    height: 53px;
     left: 8%;
     top: 16%;
+    background: #ffc43d;
 }
 
 #footer {
     position:relative;
-    z-index:2;
+    z-index: 2;
 	top: 0;
 	width: 100%;
     height: 57px;
@@ -90,7 +104,7 @@
 }
 
 
-#right_background{
+#right_background {
     position: absolute;
     top: 0;
     margin: 0;
@@ -101,3 +115,10 @@
     background: #F1F8E9;
 }
 
+
+.character_box {
+    position: relative;
+    padding: 0 10px;
+    text-align: center;
+
+}
