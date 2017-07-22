@@ -35,4 +35,11 @@ class Star extends Obj
         STAR_LIST[Math.random()] = new Star(Math.random()*w, 
                                             Math.random()*h, Math.random()*1);
     }
+
+    static delAllStar()
+    {
+        for (var i in STAR_LIST) {
+            delete STAR_LIST[i];
+        }
+    }
 }

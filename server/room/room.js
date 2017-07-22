@@ -114,6 +114,11 @@ class Room {
         return this.second;
     }
 
+    refresh() {
+        this.play_time = 0;
+        this.second = 0;
+    }
+
     static connRoom(list, id) {
         for (var tmp = 0; tmp < list.length; tmp++) {
             if (list[tmp].isValidate()) {
