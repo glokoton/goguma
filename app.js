@@ -29,7 +29,11 @@ io.sockets.on('connection', function(socket) {
     var roomNum = Room.connRoom(ROOM_LIST, socket.id);
 
     socket.on('disconnect', function() {
+        /* --SOCKET_DISCONN-- */
         delete SOCKET_LIST[socket.id];
+
+        /* --ROOM_DISCONN-- */
+        ROOM_LIST[roomNum].disconn(socket.id);
     });
 });
 
