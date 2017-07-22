@@ -13,40 +13,29 @@ serv.listen(80);
 console.log("port : 80 open");
 
 var SOCKET_LIST = {};
+var ROOM_LIST = [];
 
 var DEBUG = true;
 
 var io = require('socket.io')(serv, {});
-    io.sockets.on('connection', function(socket) {
 
+const Room = require('./server/room/room.js');
+
+io.sockets.on('connection', function(socket) {
+    /* --SOCKET_CONN-- */
     SOCKET_LIST[socket.id] = socket;
-    PLAYER_LIST[socket.id] = new Player(0, 0);
 
-    socket.emit('initGame', socket.id);
-
-    socket.on('keyPress', function (data) {
-        if (data.inputId === 'right') {
-            console.log("right");
-        } else if (data.inputId === 'left') {
-            console.log("left");
-        } else if (data.inputId === 'up') {
-            console.log("up");
-        } else if (data.inputId === 'down') {
-            console.log("down");
-        }
-    });
+    /* --ROOM_CONN-- */
+    var roomNum = Room.connRoom(ROOM_LIST, socket.id);
 
     socket.on('disconnect', function() {
         delete SOCKET_LIST[socket.id];
-        delete PLAYER_LIST[socket.id];
     });
 });
 
 
-const Player = require('./server/player.js');
-var PLAYER_LIST = {};
 
-
+/*
 setInterval(function() {
 
     var pack = {
@@ -58,4 +47,4 @@ setInterval(function() {
         socket.emit('newPosition', pack);
     }
 
-}, 1000/25);
+}, 1000/25);*/
