@@ -4,13 +4,28 @@
 <script>
     var ctx = document.getElementById("ctx").getContext("2d");
     var socket = io();
+
+    var socketId = 0;
+    Player.list = {};
+
     socket.on('newPosition', function(data) {
         console.log(data);
         for (var i = 0; i < data.player.length; i++) 
         {
-            ctx.fillText(0, data.player[i].x, data.player[i].y);
+            if (Player.list[data.player[i].id] == null) {
+                //Player.list[data.player[i].id] = new Player();
+            } else {
+                //Player.list[data.player[i].id].x = data.player[i].x;
+                //Player.list[data.player[i].id].y = data.player[i].y;
+            }
         }
     });
+
+
+    socket.on('initGame', function(id, player) {
+        socketId = id;
+    });
+
     document.onkeydown = function(event) {
         if(event.keyCode === 68)
             socket.emit('keyPress', {inputId:'right', isPress: true});
