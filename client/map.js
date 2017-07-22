@@ -1,18 +1,14 @@
 class MapData
 {
-    constructor(map)
+    constructor(map, stage)
     {
         this.map = map;
-        this.stage = 0;
-    }
-
-    setStage(index)
-    {
-        this.stage = index;
+        this.stage = stage;
     }
 
     getSize()
     {
+        console.log(this.stage);
         return {width: this.map[this.stage][0].length * 30, height: this.map[this.stage].length * 30};
     }
 

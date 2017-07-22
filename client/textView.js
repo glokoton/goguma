@@ -6,7 +6,8 @@ class TextView
         context.font = "bold 24px helvetica";
         
         context.fillText(restrictString, 400 - restrictString.toString().length*6, 30);
-        if(restTime != undefined)
+        
+        if(restrictString === "You have to goal in 30 seconds!" && restTime != undefined)
         {
             context.fillText(restTime.toString(), 400, 70);
         }

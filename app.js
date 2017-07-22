@@ -58,7 +58,7 @@ io.sockets.on('connection', function(socket)
     PLAYER_LIST[socket.id] = new Player();
 
     socket.on('initGame', function() {
-        socket.emit('initGame', socket.id, PLAYER_LIST[socket.id].getRestrict(), mapData.map);
+        socket.emit('initGame', socket.id, PLAYER_LIST[socket.id].getRestrict(), mapData.map, 0);
     });
 
     socket.on('restart', function() {
@@ -69,7 +69,7 @@ io.sockets.on('connection', function(socket)
             PLAYER_LIST[ROOM_LIST[roomNum].player_list[i]].setRestrict(i);
         }
 
-        socket.emit('initGame', socket.id, PLAYER_LIST[socket.id].getRestrict(), mapData.map);
+        socket.emit('initGame', socket.id, PLAYER_LIST[socket.id].getRestrict(), mapData.map, ROOM_LIST[roomNum].stage);
     });
 
     socket.on('keyPress', function (data)
@@ -84,6 +84,8 @@ io.sockets.on('connection', function(socket)
             PLAYER_LIST[socket.id].pressRight = data.isPress;
         if (data.inputId === 'jump')
             PLAYER_LIST[socket.id].pressJump = data.isPress;
+        if (data.inputId === 'clear')
+            PLAYER_LIST[socket.id].cheat = true;
     });
 
 
@@ -124,25 +126,31 @@ setInterval(function() {
             for (var tmpPlayer = 0; tmpPlayer < ROOM_LIST[i].player_list.length; tmpPlayer++) {
                 var tmpId = ROOM_LIST[i].player_list[tmpPlayer];
                 player.push(Player.updateList(PLAYER_LIST[tmpId], tmpId));
+                /* restrict 4 : jump die */
+                if (PLAYER_LIST[tmpId].restrict == 3 && PLAYER_LIST[tmpId].state === "JUMP") {
+                    if (ROOM_LIST[i].play_time > 10)
+                        ROOM_LIST[i].isGameOver = true;
+                }
             }
 
             var tmpList = ROOM_LIST[i].player_list;
-            if (PLAYER_LIST[tmpList[0]].isGoal() && PLAYER_LIST[tmpList[1]].isGoal())
+            if ((PLAYER_LIST[tmpList[0]].isGoal() && PLAYER_LIST[tmpList[1]].isGoal() && !ROOM_LIST[i].isGameOver) || PLAYER_LIST[tmpList[0]].cheat)
             {
+                PLAYER_LIST[tmpList[0]].cheat = false;
                 ROOM_LIST[i].goNextStage();
                 ROOM_LIST[i].refresh();
 
                 for (var j = 0; j < 2; j++) {
                     PLAYER_LIST[tmpList[j]].setPosition(j, ROOM_LIST[i].stage);
                     PLAYER_LIST[tmpList[j]].setRestrict(j);
-                    SOCKET_LIST[tmpList[j]].emit('initGame', tmpList[j], PLAYER_LIST[tmpList[j]].getRestrict(), mapData.map);
+                    SOCKET_LIST[tmpList[j]].emit('initGame', tmpList[j], PLAYER_LIST[tmpList[j]].getRestrict(), mapData.map, ROOM_LIST[i].stage);
                 }
             }
 
-            pack = {player : player, time: ROOM_LIST[i].tick(SOCKET_LIST)};
+            pack = {player : player, time: ROOM_LIST[i].tick(SOCKET_LIST, PLAYER_LIST)};
 
             /* time over */
-            if (pack.time >= 30) {
+            if (pack.time >= 30 && (PLAYER_LIST[tmpList[0]].restrict == 2 || PLAYER_LIST[tmpList[1]].restrict == 2)) {
                 PLAYER_LIST[tmpList[0]].state = "DEAD";
                 PLAYER_LIST[tmpList[1]].state = "DEAD";
             }

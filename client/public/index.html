@@ -67,6 +67,9 @@
 
         /* set screen scroll */
         Player.list[socketId].setScreen(scr, mapData.getSize());
+        /* set time */
+        restTime = 30 - data.time;
+        if (restTime < 0) restTime = 0;
 
         /* print */
         Star.print(scr, context);
@@ -82,16 +85,12 @@
         TextView.print(restrictString, restTime, context);
     });
 
-    socket.on('initGame', function(id, restrict, map) {
+    socket.on('initGame', function(id, restrict, map, stage) {
         socketId = id;
         restrictString = restrict;
-        mapData = new MapData(map);
+        mapData = new MapData(map, stage);
         Star.delAllStar();
         for (var i = 1; i <= 1000; i++) Star.addStar();
-    });
-
-    socket.on('limitTime', function(time) {
-        restTime = time;
     });
 
     document.onkeydown = function(event) {
@@ -117,6 +116,8 @@
             socket.emit('keyPress', { inputId: 'up', isPress: false });
         if (event.keyCode === 32)
             socket.emit('keyPress', { inputId: 'jump', isPress: false });
+        if (event.keyCode === 65)
+            socket.emit('keyPress', { inputId: 'clear', isPress: true });
         if (event.keyCode === 82)
             socket.emit('restart');
     }

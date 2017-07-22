@@ -24,16 +24,16 @@ class Room {
             PLAYER_LIST[this.player_list[i]].setPosition(i, this.stage);
             PLAYER_LIST[this.player_list[i]].setRestrict(i);
 
+            if (PLAYER_LIST[this.player_list[i]].restrict == 1){
+                this.timeLimit = true;
+            }
+
             var tmpSocketId = this.player_list[i];
             SOCKET_LIST[tmpSocketId].emit('startGame');
         }
 
         this.setStage(stageIdx);
-
-        if(this.stage == 0) {
-            this.timeLimit = true;
-        }
-
+        
         this.play_time = 0;
         this.second = 0;
         this.state = 'start';
@@ -56,7 +56,6 @@ class Room {
             }
 
         } else if (this.state === 'start') {
-
 
             if (this.player_list[0] === id) {
                 this.player_list.splice(0, 1);
@@ -134,14 +133,13 @@ class Room {
         }
     }
 
-    tick(SOCKET_LIST) {
+    tick(SOCKET_LIST, PLAYER_LIST) {
         this.play_time++;
         if (this.play_time >= 25) {
             this.play_time = 0;
             this.second++;
-            if(this.timeLimit && !this.isGameOver) {
-                SOCKET_LIST[this.player_list[1]].emit('limitTime', 30 - this.second);
-                if(this.second == 30){
+            if (this.timeLimit && !this.isGameOver) {
+                if (this.second == 30){
                     this.gameOver();
                 }
             }
@@ -152,7 +150,6 @@ class Room {
     goNextStage() {
         this.setStage(this.stage + 1);
     }
-
 
     setStage(index) {
         this.stage = index;

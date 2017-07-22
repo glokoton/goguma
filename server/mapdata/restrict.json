@@ -2,6 +2,9 @@
     "restrict": [
         "",
         "You cannot jump in this stage!",
-        "You have to goal in 30 seconds!"
+        "You have to goal in 30 seconds!",
+        "Just goal in",
+        "You cannot clear stage when your partner jump at least one time"
+        "You can move when your partner jump"
     ]
 }

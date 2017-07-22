@@ -23,6 +23,8 @@ class Player extends Obj
         this.pressUp = false;
         this.pressDown =false;
         this.pressJump = false;
+
+        this.cheat = false;
     }
 
     update()
@@ -116,9 +118,9 @@ class Player extends Obj
         var x = Math.floor( (this.x+16) / 30 );
         var y = Math.floor( (this.y+48) / 30 );
         /* when touch obstacle */
-        if (mapData.map[this.stage][y][x] == 1 || mapData.map[this.stage][y][x] == 1)
+        if ( (y + 1 > 0 && y + 1 < mapData.map[this.stage].length - 1) && (mapData.map[this.stage][y][x] == 1 || mapData.map[this.stage][y][x] == 1))
             this.x = x*30 + 12;
-        if (mapData.map[this.stage][y][x+1] == 1 || mapData.map[this.stage][y-1][x+1] == 1)
+        if ( (y + 1 > 0 && y + 1 < mapData.map[this.stage].length - 1) && (mapData.map[this.stage][y][x+1] == 1 || mapData.map[this.stage][y-1][x+1] == 1))
             this.x = x*30 - 14;
     }
 
@@ -185,7 +187,7 @@ class Player extends Obj
         var y = Math.floor( (this.y+21) / 30 );
 
         /* when touch goal */
-        if (mapData.map[this.stage][y+1][x] == 9) return true;
+        if ( (y + 1 > 0 && y + 1 < mapData.map[this.stage].length - 1) && mapData.map[this.stage][y+1][x] == 9) return true;
         return false;
     }
 
@@ -225,6 +227,18 @@ class Player extends Obj
                 break;
             case 1:
                 this.restrict = (id == 0 ? 2 : 1);
+                break;
+            case 2:
+                this.restrict = (id == 0 ? 3 : 4);
+                break;
+            case 3:
+                this.restrict = (id == 0 ? 4 : 3);
+                break;
+            case 4:
+                this.restrict = (id == 0 ? 2 : 5);
+                break;
+            case 5:
+                this.restrict = (id == 0 ? 5 : 2);
                 break;
         }
     }
