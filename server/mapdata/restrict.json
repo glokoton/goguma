@@ -1,7 +1,7 @@
 {
     "restrict": [
         "",
-        "You can't jump",
-        "Limit 1 miniute"
+        "You cannot jump in this stage!",
+        "You have to goal in 30 seconds!"
     ]
 }

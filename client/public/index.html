@@ -13,7 +13,8 @@
 <script type = "text/javascript" src = "../client/map.js"></script>
 <script type = "text/javascript" src = "../client/star.js"></script>
 <script type = "text/javascript" src = "../client/moon.js"></script>
-<script type = "text/javascript" src = "../client/Building.js"></script>
+<script type = "text/javascript" src = "../client/building.js"></script>
+<script type = "text/javascript" src = "../client/textView.js"></script>
 
 <script>
     var context = document.getElementById("context").getContext("2d");
@@ -38,8 +39,6 @@
     img.moon.src = "./client/image/moon.png";
     img.building = new Image();
     img.building.src = "./client/image/building.png";
-    img.goal = new Image();
-    img.goal.src = "./client/image/hos.png";
 
     var restTime;
 
@@ -48,6 +47,7 @@
 
         context.clearRect(0, 0, 800, 600);
 
+        /* get position */
         for (var i = 0; i < data.player.length; i++) 
         {
             var p = data.player[i];
@@ -65,8 +65,10 @@
             }
         }
 
+        /* set screen scroll */
         Player.list[socketId].setScreen(scr, mapData.getSize());
 
+        /* print */
         Star.print(scr, context);
         Moon.print(img, scr, context);
         Building.print(img, scr, context);
@@ -77,11 +79,7 @@
             Player.list[data.player[i].id].print(img, scr, context);
         }
         Player.list[socketId].print(img, scr, context);
-        context.fillText(restrictString, 100, 100);
-        if(restTime != undefined)
-        {
-            context.fillText(restTime.toString(), 400, 50);
-        }
+        TextView.print(restrictString, restTime, context);
     });
 
     socket.on('initGame', function(id, restrict, map) {

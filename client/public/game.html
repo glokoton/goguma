@@ -6,11 +6,14 @@
 <link rel="stylesheet" type="text/css" href="../client/css/_default.css">
 </head>
 
+<iframe id="game_frame"></iframe>
+
 <script>
     var socket = io();
+    var ip = "10.10.10.138";
 
-    socket.on('startGame', function(name, data) {
-        document.getElementById('game_frame').src = "http://10.10.10.138/game";
+    socket.on('startGame', function (name, data) {
+        document.getElementById('game_frame').src = "http://" + ip + "/game";
         
 		document.getElementById('game_frame').onload = function() {
 		 	socket.emit('initGame');
@@ -19,14 +22,15 @@
 
     socket.on('goRoom', function() {
         console.log("called");
-        document.getElementById('game_frame').src = "http://10.10.10.138/room";
+        document.getElementById('game_frame').src = "http://" + ip + "/game";
         
 		document.getElementById('game_frame').onload = function() {
 		 	socket.emit('goRoom');
 		};
     });
+
+    document.getElementById('game_frame').src = "http://" + ip + "/room";
 </script>
 
-<iframe id="game_frame" src="http://10.10.10.138/room"></iframe>
 
 </html>

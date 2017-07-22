@@ -123,7 +123,6 @@ class Room {
 
         this.count--;
 
-        
 
         if (this.count == -1) {
             this.start(SOCKET_LIST, PLAYER_LIST, stageIdx);
@@ -141,8 +140,8 @@ class Room {
             this.play_time = 0;
             this.second++;
             if(this.timeLimit && !this.isGameOver) {
-                SOCKET_LIST[this.player_list[1]].emit('limitTime', 60 - this.second);
-                if(this.second == 60){
+                SOCKET_LIST[this.player_list[1]].emit('limitTime', 30 - this.second);
+                if(this.second == 30){
                     this.gameOver();
                 }
             }
@@ -160,13 +159,13 @@ class Room {
     }
 
     gameOver() {
-        console.log('This game is over!!');
         this.isGameOver = true;
     }
 
     refresh() {
         this.play_time = 0;
         this.second = 0;
+        this.isGameOver = false;
     }
 
     static connRoom(list, id) {

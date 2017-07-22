@@ -111,10 +111,7 @@ io.sockets.on('connection', function(socket)
                 ROOM_LIST[roomNum].player_list.splice(0, 1);
                 ROOM_LIST[roomNum].player_state.splice(0, 1);
             }
-
         }
-        
-
     });
 });
 
@@ -143,6 +140,13 @@ setInterval(function() {
             }
 
             pack = {player : player, time: ROOM_LIST[i].tick(SOCKET_LIST)};
+
+            /* time over */
+            if (pack.time >= 30) {
+                PLAYER_LIST[tmpList[0]].state = "DEAD";
+                PLAYER_LIST[tmpList[1]].state = "DEAD";
+            }
+
             SOCKET_LIST[tmpList[0]].emit('newPosition', pack);
             SOCKET_LIST[tmpList[1]].emit('newPosition', pack);
         }

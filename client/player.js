@@ -45,6 +45,8 @@ class Player extends Obj
             context.drawImage(img.player, 0, 2*h, w, h, x, y, w, h);
         else if (this.state == "CLIMB")
             context.drawImage(img.player, m*w, h, w, h, x, y, w, h);
+        else if (this.state == "DEAD")
+            context.drawImage(img.player, w, 2*h, 42, h, x, y, 42, h);
         else
             context.drawImage(img.player, m*w, 0, w, h, x, y, w, h);
 

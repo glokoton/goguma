@@ -1,31 +1,14 @@
-class TextView extends Obj
+class TextView
 {
-    constructor(text, x, y, size, color)
+    static print(restrictString, restTime, context)
     {
-        super(x, y);
-
-        if(text == undefined) text = 'text';
-        setText(text);
-
-        if(size == undefined) size = '12px';
-        if(color == undefined) color = '#000';
-        setFont(size, color);
-    }
-
-    setText(text)
-    {
-        this.text = text;
-    }
-
-    setFont(size, color)
-    {
-        this.size = size;
-        this.color = color;
-    }
-
-    print(context)
-    {
-        context.font = size + ' ' + color + ' ' + 'serif';
-        context.fillText(this.text, this.x, this.y);
+        context.fillStyle = "rgb(255,255,255)";
+        context.font = "bold 24px helvetica";
+        
+        context.fillText(restrictString, 400 - restrictString.toString().length*6, 30);
+        if(restTime != undefined)
+        {
+            context.fillText(restTime.toString(), 400, 70);
+        }
     }
 }

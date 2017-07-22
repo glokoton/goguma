@@ -31,6 +31,9 @@ class Player extends Obj
         if (this.state != "CLIMB")
             this.gravity();
 
+        // return when player is dead
+        if (this.state == "DEAD") return;
+
         // init state
         if (this.state != "JUMP")
         {
@@ -190,6 +193,8 @@ class Player extends Obj
     {
         this.stage = stage;
         /* set first position */
+        this.state = "IDLE";
+        this.dir = "RIGHT";
         var height = mapData.map[stage].length;
         var width = mapData.map[stage][0].length;
         for (var i = 0; i < height; i++)
