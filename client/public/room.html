@@ -17,7 +17,38 @@
 <div id="content">
 	<div id="left_background"></div>
 	<div id="right_background"></div>
-	<div class="max-container">
+	<div id="content_wrapper" class="max-container"></div>
+</div>
+
+<div id="footer">
+	<div style="height: 100%;" class="max-container">
+	<p id="logo_txt" class="gothic_txt" style="width:100%; margin: 0 auto;">대기중입니다!</p>
+	</div>
+</div>
+
+<script>
+	var socket = parent.socket;
+	var id;
+
+	socket.emit('initRoom');
+    socket.on('initRoom', function(data) {
+		// room init
+		id = data.id;
+		var iHtml = '';
+		for (var i = 0; i < data.list.player_list.length; i++) {
+			iHtml += '<div id="content_' + (i==0? 'left': 'right') + '" class="romm_content">';
+			iHtml += 	'<div id="character" class="character_box">';
+			iHtml += 		'<img src="../client/resource/player' + i + '.png" style="height: 100%;margin: auto;">'
+			iHtml += 	'</div>';
+			iHtml += 	'<div id="btn_ready_wait" class="box">';
+			iHtml += 		'<p id="ready_txt" class="gothic_txt" style="width:100%; margin: 0 auto;">READY!</p>';
+			iHtml += 	'</div>';
+			iHtml += '</div>'
+		}
+		document.getElementById('content_wrapper').innerHTML = iHtml;
+	});
+
+	/*
 		<div id="content_left" class="romm_content">
 			<div id="character" class="character_box">
 				<img src="../client/resource/player1.png" style="height: 100%;margin: auto;">
@@ -34,14 +65,7 @@
 				<p id="ready_txt" class="gothic_txt" style="width:100%; margin: 0 auto;">READY!</p>
 			</div>
 		</div>
-	</div>
-	
-</div>
-
-<div id="footer">
-	<div style="height: 100%;" class="max-container">
-	<p id="logo_txt" class="gothic_txt" style="width:100%; margin: 0 auto;">대기중입니다!</p>
-	</div>
-</div>
+	*/
+</script>
 
 </html>

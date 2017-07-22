@@ -34,6 +34,18 @@ io.sockets.on('connection', function(socket)
     /* --ROOM_CONN-- */
     var roomNum = Room.connRoom(ROOM_LIST, socket.id);
 
+    
+
+    socket.on('initRoom', function () {
+        for (var i = 0; i < ROOM_LIST[roomNum].player_list.length; i++) {
+            var tmpSocketId = ROOM_LIST[roomNum].player_list[i];
+            SOCKET_LIST[tmpSocketId].emit('initRoom', {id: tmpSocketId, list: ROOM_LIST[roomNum]});
+        }
+        
+        socket.emit('initRoom', {id: socket.id, list: ROOM_LIST[roomNum]});
+    });
+    
+
     PLAYER_LIST[socket.id] = new Player();
 
     socket.emit('initGame', socket.id, mapData.map);
