@@ -12,6 +12,8 @@
 <script type = "text/javascript" src = "../client/player.js"></script>
 <script type = "text/javascript" src = "../client/map.js"></script>
 <script type = "text/javascript" src = "../client/star.js"></script>
+<script type = "text/javascript" src = "../client/moon.js"></script>
+<script type = "text/javascript" src = "../client/Building.js"></script>
 
 <script>
     var context = document.getElementById("context").getContext("2d");
@@ -22,6 +24,8 @@
 
     Player.list = {};
     var scr = { x: 0, y: 0 };
+    //var moon = new Moon();
+
     var restrictString;
     var mapData;
 
@@ -30,6 +34,10 @@
     img.player.src = "./client/image/player.png";
     img.tile = new Image();
     img.tile.src = "./client/image/tile.png";
+    img.moon = new Image();
+    img.moon.src = "./client/image/moon.png";
+    img.building = new Image();
+    img.building.src = "./client/image/building.png";
 
     socket.on('newPosition', function (data) {
         if (socketId == 0) return ;
@@ -55,6 +63,8 @@
         Player.list[socketId].setScreen(scr, mapData.getSize());
 
         Star.print(scr, context);
+        Moon.print(img, scr, context);
+        Building.print(img, scr, context);
         mapData.print(img, scr, context);
         for (var i = 0; i < data.player.length; i++)
         {
