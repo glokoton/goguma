@@ -6,13 +6,22 @@ class Player extends Obj
 		this.state = state;
 		this.dir = dir;
 		this.motion = motion;
-        this.restrict = restrict; // Á¦ÇÑ»çÇ× ³»¿ë
+        this.restrict = restrict; // ï¿½ï¿½ï¿½Ñ»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
 
-    setScreen(scr)
+    setScreen(scr, mapSize)
     {
-        scr.x = this.x - 400;
-        scr.y = this.y - 300;
+        if(mapSize.width <= 800 || scr.x == undefined){
+            scr.x = 0;
+        }
+        else if(this.x >= 400 && this.x <= mapSize.width - 420){
+            scr.x = this.x - 400;
+        }
+        if(mapSize.height <= 700 || scr.y == undefined){
+            scr.y = 0;
+        }else if(this.y >= 400 && this.y <= mapSize.height - 320){
+            scr.y = this.y - 300;
+        }
     }
 
     print(img, scr, context)
