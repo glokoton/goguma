@@ -2,6 +2,7 @@
 
 const Obj = require ('../server/obj.js');
 const mapData = require('../server/mapdata/mapdata.json');
+const restrictData = require('../server/mapdata/restrict.json');
 
 class Player extends Obj
 {
@@ -16,7 +17,7 @@ class Player extends Obj
         this.motion = 0;
         this.spd = 6;
         this.vy = 0;
-        this.restrict = "You!!";
+        this.restrict = 1;
 
         this.pressRight = false;
         this.pressLeft = false;
@@ -35,7 +36,7 @@ class Player extends Obj
         if (this.state != "JUMP")
         {
             // jump
-            if (this.pressJump)
+            if (this.pressJump || this.restrict != 1)
                 this.jump();
             // init state
             else if(this.state != "CLIMB")

@@ -1,0 +1,7 @@
+{
+    "restrict": [
+        "",
+        "You can't jump",
+        "Limit 1 miniute"
+    ]
+}
