@@ -8,6 +8,14 @@
 
 <script>
     var socket = io();
+
+    socket.on('startGame', function(name, data) {
+        document.getElementById('game_frame').src = "http://localhost/game";
+        
+		document.getElementById('game_frame').onload = function() {
+		 	socket.emit('initGame');
+		};
+    });
 </script>
 
 <iframe id="game_frame" src="http://localhost/room"></iframe>
