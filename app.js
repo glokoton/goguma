@@ -131,6 +131,13 @@ setInterval(function() {
                     PLAYER_LIST[tmpId].pressLeft = false;
                     PLAYER_LIST[tmpId].pressRight = false;
                 }
+                /* restrict 7 : jump forced by partner */
+                if (PLAYER_LIST[tmpId].restrict == 7) {
+                    PLAYER_LIST[tmpId].pressJump = false;
+                    if (PLAYER_LIST[partnerId].state === "JUMP") {
+                        PLAYER_LIST[tmpId].pressJump = true;
+                    }
+                }
 
                 player.push(Player.updateList(PLAYER_LIST[tmpId], tmpId));
 

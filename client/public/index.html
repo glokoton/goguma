@@ -21,7 +21,7 @@
 
     var socket = parent.socket;
     var socketId = 0;
-
+    var partnerId = 0;
 
     Player.list = {};
     var scr = { x: 0, y: 0 };
@@ -39,6 +39,8 @@
     img.moon.src = "./client/image/moon.png";
     img.building = new Image();
     img.building.src = "./client/image/building.png";
+    img.sight = new Image();
+    img.sight.src = "./client/image/sight.png";
 
     var restTime;
 
@@ -63,10 +65,14 @@
                 Player.list[p.id].dir = p.dir;
                 Player.list[p.id].motion = p.motion;
             }
+            if (p.id != socketId) partnerId = p.id;
         }
 
         /* set screen scroll */
-        Player.list[socketId].setScreen(scr, mapData.getSize());
+        if (restrictString === "Your sight is not your own!")
+            Player.list[partnerId].setScreen(scr, mapData.getSize());
+        else
+            Player.list[socketId].setScreen(scr, mapData.getSize());
         /* set time */
         restTime = 30 - data.time;
         if (restTime < 0) restTime = 0;
@@ -76,12 +82,15 @@
         Moon.print(img, scr, context);
         Building.print(img, scr, context);
         mapData.print(img, scr, context);
+        Player.list[socketId].print(img, scr, context);
         for (var i = 0; i < data.player.length; i++)
         {
             if (socketId == data.player[i].id) continue;
             Player.list[data.player[i].id].print(img, scr, context);
+            /* restrict 6 : dark sight */
+            if (restrictString === "Your sight is not your own!")
+                context.drawImage(img.sight, 0, 0, 1400, 1000, Player.list[data.player[i].id].x-700-scr.x, Player.list[data.player[i].id].y-500-scr.y, 1400, 1000);
         }
-        Player.list[socketId].print(img, scr, context);
         TextView.print(restrictString, restTime, context);
     });
 

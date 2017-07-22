@@ -18,7 +18,7 @@ class Player extends Obj
         else if (this.x > mapSize.width - 420)
             scr.x = mapSize.width - 420 - 400;
 
-        if (mapSize.height <= 700 || this.y < 400)
+        if (mapSize.height <= 700 || this.y < 300)
             scr.y = 0;
         else if (this.y > mapSize.height - 320)
             scr.y = mapSize.height - 320 - 300;

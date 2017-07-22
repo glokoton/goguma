@@ -5,6 +5,8 @@
         "You have to goal in 30 seconds!",
         "Just goal in",
         "You cannot clear stage when your partner jump at least one time",
-        "You can move when your partner jump"
+        "You can move when your partner jump",
+        "Your sight is not your own!",
+        "Your jump is forced by your partner!"
     ]
 }

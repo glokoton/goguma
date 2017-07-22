@@ -240,6 +240,12 @@ class Player extends Obj
             case 5:
                 this.restrict = (id == 0 ? 5 : 2);
                 break;
+            case 6:
+                this.restrict = (id == 0 ? 6 : 7);
+                break;
+            case 7:
+                this.restrict = (id == 0 ? 7 : 6);
+                break;
         }
     }
 
