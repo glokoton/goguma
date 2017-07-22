@@ -34,18 +34,18 @@
 
         for (var i = 0; i < data.player.length; i++) 
         {
-            if (Player.list[data.player[i].id] == null)
+            var p = data.player[i];
+            if (Player.list[p.id] == null)
             {
-                var p = data.player[i];
-                Player.list[data.player[i].id] = new Player(p.x, p.y, p.state, p.dir, p.motion, p.restrict);
+                Player.list[p.id] = new Player(p.x, p.y, p.state, p.dir, p.motion, p.restrict);
             }
             else
             {
-                Player.list[data.player[i].id].x = data.player[i].x;
-                Player.list[data.player[i].id].y = data.player[i].y;
-                Player.list[data.player[i].id].state = data.player[i].state;
-                Player.list[data.player[i].id].dir = data.player[i].dir;
-                Player.list[data.player[i].id].motion = data.player[i].motion;
+                Player.list[p.id].x = p.x;
+                Player.list[p.id].y = p.y;
+                Player.list[p.id].state = p.state;
+                Player.list[p.id].dir = p.dir;
+                Player.list[p.id].motion = p.motion;
             }
         }
 

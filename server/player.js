@@ -6,8 +6,10 @@ const mapData = require('../server/mapdata/mapdata.json');
 class Player extends Obj
 {
     constructor()
-    {
-        super(400, 300);
+    {   
+        super(0, 0);
+
+        this.setPosition();
 
         this.state = "IDLE";
         this.dir = "RIGHT";
@@ -26,32 +28,33 @@ class Player extends Obj
     update()
     {
         // add gravity
-        this.gravity();
+        if (this.state != "CLIMB")
+            this.gravity();
 
         // init state
         if (this.state != "JUMP")
         {
+            // jump
             if (this.pressJump)
-            {
-                this.vy = -13;
-                this.state = "JUMP";
-            }
-            else
+                this.jump();
+            // init state
+            else if(this.state != "CLIMB")
                 this.state = "IDLE";
         }
 
-        // move player
-        if (this.pressLeft)
+        // move player up, down
+        if (this.pressUp)
+            this.moveUp();
+        if (this.pressDown)
+            this.moveDown();
+        
+        // move player left, right
+        if (this.state != "CLIMB")
         {
-            this.x -= this.spd;
-            this.state = "WALK";
-            this.dir = "LEFT";
-        }
-        if (this.pressRight)
-        {
-            this.x += this.spd;
-            this.state = "WALK";
-            this.dir = "RIGHT";
+            if (this.pressLeft)
+                this.moveLeft();
+            if (this.pressRight)
+                this.moveRight();
         }
 
         // set motion
@@ -65,7 +68,6 @@ class Player extends Obj
 
     gravity()
     {
-        var fy = Math.floor( (this.y+24) / 30 );
         /* 1의 속도로 중력 가속 */
         if( this.vy < 20 ) this.vy += 1.5;
         /* y위치에 속력을 더한다. */
@@ -77,7 +79,8 @@ class Player extends Obj
         var y = Math.floor( (this.y-24) / 30 );
     
         /* 천장에 닿을 때 */
-        if( ( mapData.map[0][y+1][x] == 1 || mapData.map[0][y+1][lx] == 1 || mapData.map[0][y+1][rx] == 1 ) && this.vy < 0 ){
+        if (( mapData.map[0][y+1][x] == 1 || mapData.map[0][y+1][lx] == 1 || mapData.map[0][y+1][rx] == 1 ) && this.vy < 0)
+        {
             this.y = y*30 + 48;
             this.vy = 0;
             return;
@@ -85,15 +88,83 @@ class Player extends Obj
     
         y = Math.floor( (this.y+24) / 30 );
         /* 바닥에 닿을 때 ( 바로 밑에 땅이 있다 && 떨어지고 있다 && 바닥을 통과하지 않았다 )*/
-        if( ( mapData.map[0][y+1][x] != 0 || mapData.map[0][y+1][lx] != 0 || mapData.map[0][y+1][rx] != 0 ) && this.vy > 0 && this.y - this.vy <= y*30 - 24 ){
+        if (( ( mapData.map[0][y+1][x] != 0 || mapData.map[0][y+1][lx] != 0 || mapData.map[0][y+1][rx] != 0) &&
+              ( mapData.map[0][y+1][x] != 3 && mapData.map[0][y+1][lx] != 3 && mapData.map[0][y+1][rx] != 3) ) &&
+                this.vy > 0 && this.y - this.vy <= y*30 - 24)
+        {
             this.y = y*30 - 24;
             this.vy = 0;
-            if( this.state == "JUMP" ){
+            if (this.state == "JUMP")
                 this.state = "IDLE";
-            }
         }
-        else if( this.state != "DEAD" ){
+        else if (this.state != "DEAD")
             this.state = "JUMP";
+    }
+
+    jump()
+    {
+        this.vy = -13;
+        this.state = "JUMP";
+    }
+
+    moveLeft()
+    {
+        this.x -= this.spd;
+        this.state = "WALK";
+        this.dir = "LEFT";
+    }
+    moveRight()
+    {
+        this.x += this.spd;
+        this.state = "WALK";
+        this.dir = "RIGHT";
+    }
+    moveUp()
+    {
+        var x = Math.floor( (this.x+32) / 30 );
+        var y = Math.floor( (this.y+20) / 30 );
+        /* 사다리에 닿을 때 */
+        if (mapData.map[0][y+1][x] == 3 || mapData.map[0][y+1][x] == 4)
+        {
+            this.vy = 0;
+            this.y -= this.spd;
+            this.state = "CLIMB";
+        }
+        else if (this.state == "CLIMB")
+            this.state = "IDLE";
+    }
+    moveDown()
+    {
+        var x = Math.floor( (this.x+32) / 30 );
+        var y = Math.floor( (this.y+24) / 30 );
+        /* 사다리에 닿을 때 */
+        if (mapData.map[0][y+1][x] == 3 || mapData.map[0][y+1][x] == 4)
+        {
+            this.vy = 0;
+            this.y += this.spd;
+            this.state = "CLIMB";
+        }
+        else if (this.state == "CLIMB")
+            this.state = "IDLE";
+    }
+
+    setPosition()
+    {
+        var stage = mapData.stage;
+        var height = mapData.map[stage].length;
+        var width = mapData.map[stage][0].length;
+        for (var i = 0; i <= height; i++)
+        {
+            for (var j = 0; j <= width; j++)
+            {
+                if (mapData.map[stage][i][j] == 11)
+                {
+                    this.x = j*30;
+                    this.y = (i-1)*30;
+                    mapData.map[stage][i][j] = 0;
+                    return;
+                }
+            }
         }
     }
 

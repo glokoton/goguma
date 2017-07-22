@@ -57,6 +57,9 @@ io.sockets.on('connection', function(socket)
         /* --SOCKET_DISCONN-- */
         delete SOCKET_LIST[socket.id];
 
+        /* --PLAYER_DISCONN-- */
+        delete PLAYER_LIST[socket.id];
+
         /* --ROOM_DISCONN-- */
         ROOM_LIST[roomNum].disconn(socket.id);
     });
